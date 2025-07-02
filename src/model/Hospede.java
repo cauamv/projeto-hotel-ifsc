@@ -1,8 +1,21 @@
 package model;
-public class Hospede extends Pessoa{
+
+import generator.CrudEntity;
+import generator.CrudField;
+
+@CrudEntity(tableName = "hospedes", displayName = "Hóspedes")
+public class Hospede extends Pessoa {
+    
+    @CrudField(label = "Razão Social", order = 16, maxLength = 200)
     private String razaoSocial;
+    
+    @CrudField(label = "CNPJ", order = 17, maxLength = 18)
     private String cnpj;
+    
+    @CrudField(label = "Inscrição Estadual", order = 18, maxLength = 20)
     private String inscricaoEstdual;
+    
+    @CrudField(label = "Contato", order = 19, maxLength = 100)
     private String contato;
 
     public Hospede() {

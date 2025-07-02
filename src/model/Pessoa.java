@@ -1,21 +1,54 @@
 package model;
 
+import generator.CrudEntity;
+import generator.CrudField;
+
+@CrudEntity(tableName = "pessoas", displayName = "Pessoas")
 public class Pessoa {
 
+    @CrudField(label = "ID", editable = false, order = 1, type = "NUMBER")
     private int id;
+    
+    @CrudField(label = "Nome", required = true, order = 2, maxLength = 100)
     private String nome;
+    
+    @CrudField(label = "Telefone 1", order = 3, maxLength = 15)
     private String fone1;
+    
+    @CrudField(label = "Telefone 2", order = 4, maxLength = 15)
     private String fone2;
+    
+    @CrudField(label = "Email", order = 5, maxLength = 100)
     private String email;
+    
+    @CrudField(label = "CEP", order = 6, maxLength = 10)
     private String cep;
+    
+    @CrudField(label = "Logradouro", order = 7, maxLength = 200)
     private String logradouro;
+    
+    @CrudField(label = "Bairro", order = 8, maxLength = 100)
     private String bairro;
+    
+    @CrudField(label = "Cidade", order = 9, maxLength = 100)
     private String cidade;
+    
+    @CrudField(label = "Complemento", order = 10, maxLength = 200)
     private String complemento;
+    
+    @CrudField(label = "Data Cadastro", order = 11, type = "DATE")
     private String dataCadastro;
+    
+    @CrudField(label = "CPF", order = 12, maxLength = 14)
     private String cpf;
+    
+    @CrudField(label = "RG", order = 13, maxLength = 20)
     private String rg;
+    
+    @CrudField(label = "Observações", order = 14, maxLength = 500)
     private String obs;
+    
+    @CrudField(label = "Status", order = 15, type = "CHAR")
     private char status;
 
     public Pessoa() {
