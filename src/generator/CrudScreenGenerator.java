@@ -23,7 +23,7 @@ public class CrudScreenGenerator {
                 : entityClass.getSimpleName();
 
         JFrame frame = new JFrame("CRUD - " + displayName);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setLayout(new BorderLayout());
 
         // << CORRIGIDO: A tabela agora é criada aqui no método principal
@@ -202,6 +202,7 @@ public class CrudScreenGenerator {
         String type = annotation != null ? annotation.type() : "TEXT";
         Class<?> fieldType = field.getType();
         int maxLength = annotation != null ? annotation.maxLength() : 0;
+        boolean mask = annotation != null ? annotation.mask() : false;
 
         switch (type.toUpperCase()) {
             case "PASSWORD":
@@ -247,6 +248,12 @@ public class CrudScreenGenerator {
                         }
                     });
                 }
+                
+                if (mask) {
+                    case "TELEFONE":
+                    textField.set 
+                }
+                
                 return textField;
         }
     }
