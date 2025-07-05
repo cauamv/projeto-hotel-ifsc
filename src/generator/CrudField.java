@@ -9,10 +9,12 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 public @interface CrudField {
     String label() default "";
-    boolean visible() default true;
-    boolean editable() default true;
+    boolean visible() default true;        // Se o campo aparece no formulário
+    boolean showInTable() default false;   // Se o campo aparece na tabela
+    boolean editable() default true;       // Se o campo pode ser editado no formulário
     boolean required() default false;
     int order() default 0;
     String type() default "TEXT"; // TEXT, NUMBER, DATE, BOOLEAN, PASSWORD, CHAR
     int maxLength() default 0;
+    int tableOrder() default 0;           // Ordem específica para tabela
 }

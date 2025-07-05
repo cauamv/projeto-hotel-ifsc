@@ -6,19 +6,19 @@ import generator.CrudField;
 @CrudEntity(tableName = "pessoas", displayName = "Pessoas")
 public class Pessoa {
 
-    @CrudField(label = "ID", editable = false, order = 1, type = "NUMBER")
+    @CrudField(label = "ID", editable = false, order = 1, type = "NUMBER", showInTable = true, tableOrder = 1)
     private int id;
     
-    @CrudField(label = "Nome", required = true, order = 2, maxLength = 100)
+    @CrudField(label = "Nome", required = true, order = 2, maxLength = 100, showInTable = true, tableOrder = 2)
     private String nome;
     
-    @CrudField(label = "Telefone 1", order = 3, maxLength = 15)
+    @CrudField(label = "Telefone 1", order = 3, maxLength = 15, showInTable = true, tableOrder = 3)
     private String fone1;
     
     @CrudField(label = "Telefone 2", order = 4, maxLength = 15)
     private String fone2;
     
-    @CrudField(label = "Email", order = 5, maxLength = 100)
+    @CrudField(label = "Email", order = 5, maxLength = 100, showInTable = true, tableOrder = 4)
     private String email;
     
     @CrudField(label = "CEP", order = 6, maxLength = 10)
@@ -30,7 +30,7 @@ public class Pessoa {
     @CrudField(label = "Bairro", order = 8, maxLength = 100)
     private String bairro;
     
-    @CrudField(label = "Cidade", order = 9, maxLength = 100)
+    @CrudField(label = "Cidade", order = 9, maxLength = 100, showInTable = true, tableOrder = 5)
     private String cidade;
     
     @CrudField(label = "Complemento", order = 10, maxLength = 200)
@@ -48,7 +48,7 @@ public class Pessoa {
     @CrudField(label = "Observações", order = 14, maxLength = 500)
     private String obs;
     
-    @CrudField(label = "Status", order = 15, type = "CHAR")
+    @CrudField(label = "Status", order = 15, type = "CHAR", showInTable = true, tableOrder = 6)
     private char status;
 
     public Pessoa() {

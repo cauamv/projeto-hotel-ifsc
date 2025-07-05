@@ -6,10 +6,10 @@ import generator.CrudField;
 @CrudEntity(tableName = "hospedes", displayName = "Hóspedes")
 public class Hospede extends Pessoa {
     
-    @CrudField(label = "Razão Social", order = 16, maxLength = 200)
+    @CrudField(label = "Razão Social", order = 16, maxLength = 200, showInTable = true, tableOrder = 7)
     private String razaoSocial;
     
-    @CrudField(label = "CNPJ", order = 17, maxLength = 18)
+    @CrudField(label = "CNPJ", order = 17, maxLength = 18, showInTable = true, tableOrder = 8)
     private String cnpj;
     
     @CrudField(label = "Inscrição Estadual", order = 18, maxLength = 20)
