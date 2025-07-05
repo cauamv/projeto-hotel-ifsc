@@ -1,9 +1,15 @@
 package model;
 
-public class Marca {
+import generator.CrudEntity;
+import generator.CrudField;
 
+@CrudEntity(tableName = "marcas", displayName = "Marcas")
+public class Marca {
+    @CrudField(label = "ID", editable = false, order = 1, type = "NUMBER", showInTable = true, tableOrder = 1)
     private int id;
+    @CrudField(label = "Nome", required = true, order = 2, maxLength = 100, showInTable = true, tableOrder = 2)
     private String descricao;
+    @CrudField(label = "Status", order = 3, type = "CHAR", showInTable = true, tableOrder = 3)
     private char status;
 
     public Marca() {

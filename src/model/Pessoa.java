@@ -12,7 +12,7 @@ public class Pessoa {
     @CrudField(label = "Nome", required = true, order = 2, maxLength = 100, showInTable = true, tableOrder = 2)
     private String nome;
     
-    @CrudField(label = "Telefone 1", order = 3, maxLength = 15, showInTable = true, tableOrder = 3)
+    @CrudField(label = "Telefone 1", required = true, order = 3, maxLength = 15, showInTable = true, tableOrder = 3)
     private String fone1;
     
     @CrudField(label = "Telefone 2", order = 4, maxLength = 15)
@@ -21,7 +21,7 @@ public class Pessoa {
     @CrudField(label = "Email", order = 5, maxLength = 100, showInTable = true, tableOrder = 4)
     private String email;
     
-    @CrudField(label = "CEP", order = 6, maxLength = 10)
+    @CrudField(label = "CEP", order = 6, maxLength = 10) 
     private String cep;
     
     @CrudField(label = "Logradouro", order = 7, maxLength = 200)

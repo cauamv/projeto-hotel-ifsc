@@ -1,4 +1,4 @@
-package controller;
+package repository;
 import generator.CrudRepository;
 import model.Hospede;
 import java.util.*;

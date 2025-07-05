@@ -17,4 +17,6 @@ public @interface CrudField {
     String type() default "TEXT"; // TEXT, NUMBER, DATE, BOOLEAN, PASSWORD, CHAR
     int maxLength() default 0;
     int tableOrder() default 0;           // Ordem específica para tabela
+    boolean mask() default false;
+    String typeMask() default "TELEFONE";
 }
