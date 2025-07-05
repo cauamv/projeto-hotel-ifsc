@@ -10,170 +10,168 @@ import java.lang.reflect.Field;
 import java.util.*;
 import java.util.List;
 import java.text.SimpleDateFormat;
+import java.util.stream.Collectors;
 
 public class CrudScreenGenerator {
-    
+
     public static <T> JFrame generateCrudScreen(CrudController<T> controller) {
         Class<T> entityClass = controller.getEntityClass();
-        
+
         CrudEntity entityAnnotation = entityClass.getAnnotation(CrudEntity.class);
-        String displayName = entityAnnotation != null && !entityAnnotation.displayName().isEmpty() 
-            ? entityAnnotation.displayName() 
-            : entityClass.getSimpleName();
-        
+        String displayName = entityAnnotation != null && !entityAnnotation.displayName().isEmpty()
+                ? entityAnnotation.displayName()
+                : entityClass.getSimpleName();
+
         JFrame frame = new JFrame("CRUD - " + displayName);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
-        
+
+        // << CORRIGIDO: A tabela agora é criada aqui no método principal
+        JTable table = new JTable();
+
         // Painel principal dividido
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
-        
-        // Painel da tabela (lado esquerdo)
-        JPanel tablePanel = createTablePanel(controller);
-        
+
+        // << CORRIGIDO: A tabela é passada como parâmetro para quem precisa dela
+        JPanel tablePanel = createTablePanel(table, controller);
+        JPanel formPanel = createFormPanel(table, controller);
+
         // Painel do formulário (lado direito)
-        JScrollPane formScrollPane = new JScrollPane(createFormPanel(controller));
+        JScrollPane formScrollPane = new JScrollPane(formPanel);
         formScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        
+
         splitPane.setLeftComponent(new JScrollPane(tablePanel));
         splitPane.setRightComponent(formScrollPane);
         splitPane.setDividerLocation(600);
-        
+
         frame.add(splitPane, BorderLayout.CENTER);
         frame.setSize(1200, 700);
         frame.setLocationRelativeTo(null);
-        
+
         return frame;
     }
-    
-    private static <T> JPanel createTablePanel(CrudController<T> controller) {
+
+    // << CORRIGIDO: O método agora recebe a JTable em vez de criar uma
+    private static <T> JPanel createTablePanel(JTable table, CrudController<T> controller) {
         JPanel panel = new JPanel(new BorderLayout());
-        
-        // Criar tabela
-        JTable table = new JTable();
+
+        // JTable table = new JTable(); // << CORRIGIDO: Esta linha foi removida
         updateTable(table, controller);
-        
+
         // Configurar seleção da tabela
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        
+
         // Botões da tabela
         JPanel buttonPanel = new JPanel(new FlowLayout());
         JButton refreshButton = new JButton("Atualizar");
         JButton deleteButton = new JButton("Excluir");
         JButton editButton = new JButton("Editar");
-        
+
         refreshButton.addActionListener(e -> updateTable(table, controller));
         deleteButton.addActionListener(e -> deleteSelectedRecord(table, controller));
         editButton.addActionListener(e -> editSelectedRecord(table, controller));
-        
+
         buttonPanel.add(refreshButton);
         buttonPanel.add(editButton);
         buttonPanel.add(deleteButton);
-        
+
         panel.add(new JScrollPane(table), BorderLayout.CENTER);
         panel.add(buttonPanel, BorderLayout.SOUTH);
-        
+
         return panel;
     }
-    
-    private static <T> JPanel createFormPanel(CrudController<T> controller) {
+
+    // << CORRIGIDO: O método do formulário também recebe a tabela para poder passar adiante
+    private static <T> JPanel createFormPanel(JTable table, CrudController<T> controller) {
         JPanel panel = new JPanel(new BorderLayout());
         panel.setBorder(BorderFactory.createTitledBorder("Formulário"));
-        
-        // Obter todos os campos incluindo da classe pai - CORRIGIDO
+
+        // Obter todos os campos incluindo da classe pai
         List<Field> fields = getAllFieldsFromClassHierarchy(controller.getEntityClass());
-        
+
         // Debug: imprimir campos encontrados
         System.out.println("=== CAMPOS ENCONTRADOS ===");
         for (Field field : fields) {
             CrudField annotation = field.getAnnotation(CrudField.class);
-            String label = annotation != null && !annotation.label().isEmpty() 
-                ? annotation.label() 
-                : formatFieldName(field.getName());
+            String label = annotation != null && !annotation.label().isEmpty()
+                    ? annotation.label()
+                    : formatFieldName(field.getName());
             System.out.println("Campo: " + field.getName() + " | Label: " + label + " | Classe: " + field.getDeclaringClass().getSimpleName());
         }
         System.out.println("=========================");
-        
+
         // Criar componentes do formulário
         JPanel formFieldsPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
         gbc.anchor = GridBagConstraints.WEST;
-        
+
         Map<String, JComponent> fieldComponents = new HashMap<>();
-        
+
         int row = 0;
         for (Field field : fields) {
             CrudField annotation = field.getAnnotation(CrudField.class);
             if (annotation != null && !annotation.editable()) continue;
-            
-            String label = annotation != null && !annotation.label().isEmpty() 
-                ? annotation.label() 
-                : formatFieldName(field.getName());
-            
+
+            String label = annotation != null && !annotation.label().isEmpty()
+                    ? annotation.label()
+                    : formatFieldName(field.getName());
+
             gbc.gridx = 0;
             gbc.gridy = row;
             gbc.weightx = 0;
             gbc.fill = GridBagConstraints.NONE;
-            
+
             JLabel fieldLabel = new JLabel(label + ":");
             if (annotation != null && annotation.required()) {
                 fieldLabel.setText(label + " *:");
                 fieldLabel.setForeground(Color.RED);
             }
             formFieldsPanel.add(fieldLabel, gbc);
-            
+
             JComponent component = createFieldComponent(field, annotation);
             fieldComponents.put(field.getName(), component);
-            
+
             gbc.gridx = 1;
             gbc.fill = GridBagConstraints.HORIZONTAL;
             gbc.weightx = 1.0;
             formFieldsPanel.add(component, gbc);
-            
+
             row++;
         }
-        
+
         // Botões do formulário
         JPanel buttonPanel = new JPanel(new FlowLayout());
         JButton saveButton = new JButton("Salvar");
         JButton clearButton = new JButton("Limpar");
-        
-        saveButton.addActionListener(e -> saveRecord(fieldComponents, controller));
+
+        // << CORRIGIDO: A tabela é passada para o método saveRecord
+        saveButton.addActionListener(e -> saveRecord(table, fieldComponents, controller));
         clearButton.addActionListener(e -> clearForm(fieldComponents));
-        
+
         buttonPanel.add(saveButton);
         buttonPanel.add(clearButton);
-        
+
         panel.add(formFieldsPanel, BorderLayout.CENTER);
         panel.add(buttonPanel, BorderLayout.SOUTH);
-        
+
         return panel;
     }
-    
-    /**
-     * MÉTODO CORRIGIDO: Obter todos os campos da hierarquia de classes
-     */
+
     private static List<Field> getAllFieldsFromClassHierarchy(Class<?> clazz) {
         List<Field> allFields = new ArrayList<>();
-        
-        // Percorrer toda a hierarquia de classes
+
         Class<?> currentClass = clazz;
         while (currentClass != null && currentClass != Object.class) {
             System.out.println("Analisando classe: " + currentClass.getSimpleName());
-            
+
             Field[] declaredFields = currentClass.getDeclaredFields();
             System.out.println("Campos declarados em " + currentClass.getSimpleName() + ": " + declaredFields.length);
-            
+
             for (Field field : declaredFields) {
-                // Adicionar apenas campos que não são sintéticos (gerados pelo compilador)
                 if (!field.isSynthetic()) {
                     CrudField annotation = field.getAnnotation(CrudField.class);
-                    
-                    // Se não tem anotação, adiciona como visível por padrão
-                    // Se tem anotação, verifica se é visível
                     boolean isVisible = (annotation == null) || annotation.visible();
-                    
                     if (isVisible) {
                         System.out.println("  -> Adicionando campo: " + field.getName() + " (Classe: " + currentClass.getSimpleName() + ")");
                         allFields.add(field);
@@ -182,39 +180,33 @@ public class CrudScreenGenerator {
                     }
                 }
             }
-            
-            // Subir na hierarquia
             currentClass = currentClass.getSuperclass();
         }
-        
-        // Ordenar campos por ordem especificada na anotação
+
         allFields.sort((f1, f2) -> {
             CrudField a1 = f1.getAnnotation(CrudField.class);
             CrudField a2 = f2.getAnnotation(CrudField.class);
-            int order1 = a1 != null ? a1.order() : Integer.MAX_VALUE; // Campos sem anotação vão para o final
+            int order1 = a1 != null ? a1.order() : Integer.MAX_VALUE;
             int order2 = a2 != null ? a2.order() : Integer.MAX_VALUE;
-            
+
             if (order1 != order2) {
                 return Integer.compare(order1, order2);
             }
-            
-            // Se têm a mesma ordem, ordenar por nome do campo
             return f1.getName().compareTo(f2.getName());
         });
-        
+
         return allFields;
     }
-    
+
     private static JComponent createFieldComponent(Field field, CrudField annotation) {
         String type = annotation != null ? annotation.type() : "TEXT";
         Class<?> fieldType = field.getType();
         int maxLength = annotation != null ? annotation.maxLength() : 0;
-        
+
         switch (type.toUpperCase()) {
             case "PASSWORD":
-                JPasswordField passwordField = new JPasswordField(20);
-                return passwordField;
-                
+                return new JPasswordField(20);
+
             case "NUMBER":
                 if (fieldType == int.class || fieldType == Integer.class) {
                     return new JSpinner(new SpinnerNumberModel(0, Integer.MIN_VALUE, Integer.MAX_VALUE, 1));
@@ -222,10 +214,10 @@ public class CrudScreenGenerator {
                     return new JSpinner(new SpinnerNumberModel(0.0, -Double.MAX_VALUE, Double.MAX_VALUE, 0.1));
                 }
                 return new JTextField(20);
-                
+
             case "BOOLEAN":
                 return new JCheckBox();
-                
+
             case "CHAR":
                 JTextField charField = new JTextField(1);
                 charField.setDocument(new javax.swing.text.PlainDocument() {
@@ -237,12 +229,12 @@ public class CrudScreenGenerator {
                     }
                 });
                 return charField;
-                
+
             case "DATE":
                 JTextField dateField = new JTextField(20);
                 dateField.setToolTipText("Formato: dd/MM/yyyy");
                 return dateField;
-                
+
             default:
                 JTextField textField = new JTextField(20);
                 if (maxLength > 0) {
@@ -258,37 +250,34 @@ public class CrudScreenGenerator {
                 return textField;
         }
     }
-    
+
     private static String formatFieldName(String fieldName) {
         return fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1)
                 .replaceAll("([A-Z])", " $1");
     }
-    
+
     private static <T> void updateTable(JTable table, CrudController<T> controller) {
         try {
             List<T> data = controller.findAll();
             List<Field> fields = getAllFieldsFromClassHierarchy(controller.getEntityClass());
-            
-            // Filtrar apenas campos que devem aparecer na tabela (showInTable = true)
+
             List<Field> tableFields = fields.stream()
-                .filter(f -> {
-                    CrudField annotation = f.getAnnotation(CrudField.class);
-                    return annotation != null && annotation.showInTable();
-                })
-                .sorted((f1, f2) -> {
-                    // Ordenar por tableOrder
-                    CrudField a1 = f1.getAnnotation(CrudField.class);
-                    CrudField a2 = f2.getAnnotation(CrudField.class);
-                    int order1 = a1 != null ? a1.tableOrder() : Integer.MAX_VALUE;
-                    int order2 = a2 != null ? a2.tableOrder() : Integer.MAX_VALUE;
-                    
-                    if (order1 != order2) {
-                        return Integer.compare(order1, order2);
-                    }
-                    return f1.getName().compareTo(f2.getName());
-                })
-                .collect(java.util.stream.Collectors.toList());
-            
+                    .filter(f -> {
+                        CrudField annotation = f.getAnnotation(CrudField.class);
+                        return annotation != null && annotation.showInTable();
+                    })
+                    .sorted((f1, f2) -> {
+                        CrudField a1 = f1.getAnnotation(CrudField.class);
+                        CrudField a2 = f2.getAnnotation(CrudField.class);
+                        int order1 = a1 != null ? a1.tableOrder() : Integer.MAX_VALUE;
+                        int order2 = a2 != null ? a2.tableOrder() : Integer.MAX_VALUE;
+                        if (order1 != order2) {
+                            return Integer.compare(order1, order2);
+                        }
+                        return f1.getName().compareTo(f2.getName());
+                    })
+                    .collect(Collectors.toList());
+
             System.out.println("=== CAMPOS NA TABELA ===");
             for (Field field : tableFields) {
                 CrudField annotation = field.getAnnotation(CrudField.class);
@@ -296,25 +285,23 @@ public class CrudScreenGenerator {
                 System.out.println("Campo tabela: " + field.getName() + " | Label: " + label + " | Order: " + annotation.tableOrder());
             }
             System.out.println("========================");
-            
-            // Criar modelo da tabela
+
             String[] columnNames = tableFields.stream()
-                .map(f -> {
-                    CrudField annotation = f.getAnnotation(CrudField.class);
-                    return annotation != null && !annotation.label().isEmpty() 
-                        ? annotation.label() 
-                        : formatFieldName(f.getName());
-                })
-                .toArray(String[]::new);
-            
+                    .map(f -> {
+                        CrudField annotation = f.getAnnotation(CrudField.class);
+                        return annotation != null && !annotation.label().isEmpty()
+                                ? annotation.label()
+                                : formatFieldName(f.getName());
+                    })
+                    .toArray(String[]::new);
+
             DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
                 @Override
                 public boolean isCellEditable(int row, int column) {
                     return false;
                 }
             };
-            
-            // Adicionar dados
+
             for (T item : data) {
                 Object[] row = new Object[tableFields.size()];
                 for (int i = 0; i < tableFields.size(); i++) {
@@ -328,91 +315,82 @@ public class CrudScreenGenerator {
                 }
                 model.addRow(row);
             }
-            
+
             table.setModel(model);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Erro ao carregar dados: " + e.getMessage());
             e.printStackTrace();
         }
     }
-    
-    private static <T> void saveRecord(Map<String, JComponent> fieldComponents, CrudController<T> controller) {
+
+    // << CORRIGIDO: O método saveRecord agora recebe a JTable
+    private static <T> void saveRecord(JTable table, Map<String, JComponent> fieldComponents, CrudController<T> controller) {
         try {
             T instance = controller.getEntityClass().getDeclaredConstructor().newInstance();
-            
-            // Preencher campos de todas as classes (incluindo superclasses) - CORRIGIDO
+
             List<Field> allFields = getAllFieldsFromClassHierarchy(controller.getEntityClass());
-            
+
             for (Field field : allFields) {
                 if (fieldComponents.containsKey(field.getName())) {
                     field.setAccessible(true);
                     JComponent component = fieldComponents.get(field.getName());
                     Object value = getValueFromComponent(component, field.getType());
-                    
                     if (value != null) {
                         field.set(instance, value);
                     }
                 }
             }
-            
-            // Definir data de cadastro atual se estiver vazio
+
             try {
                 Field dataCadastroField = findFieldInHierarchy(controller.getEntityClass(), "dataCadastro");
                 if (dataCadastroField != null) {
                     dataCadastroField.setAccessible(true);
-                    String currentDate = dataCadastroField.get(instance) != null ? 
-                        (String) dataCadastroField.get(instance) : "";
+                    String currentDate = dataCadastroField.get(instance) != null ?
+                            (String) dataCadastroField.get(instance) : "";
                     if (currentDate == null || currentDate.isEmpty()) {
                         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
                         dataCadastroField.set(instance, sdf.format(new java.util.Date()));
                     }
                 }
             } catch (Exception e) {
-                // Ignorar se não conseguir definir a data
                 System.out.println("Aviso: Não foi possível definir data de cadastro: " + e.getMessage());
             }
-            
+
             controller.create(instance);
             clearForm(fieldComponents);
-            updateTable(null, controller); // Atualizar tabela após salvar
-            JOptionPane.showMessageDialog(null, "Registro salvo com sucesso!");
+
+            // << CORRIGIDO: A chamada para updateTable agora passa a referência correta da tabela
+            updateTable(table, controller);
             
+            JOptionPane.showMessageDialog(null, "Registro salvo com sucesso!");
+
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Erro ao salvar: " + e.getMessage());
             e.printStackTrace();
         }
     }
-    
+
     private static Field findFieldInHierarchy(Class<?> clazz, String fieldName) {
         Class<?> currentClass = clazz;
         while (currentClass != null && currentClass != Object.class) {
             try {
-                Field field = currentClass.getDeclaredField(fieldName);
-                return field;
+                return currentClass.getDeclaredField(fieldName);
             } catch (NoSuchFieldException e) {
                 currentClass = currentClass.getSuperclass();
             }
         }
         return null;
     }
-    
+
     private static Object getValueFromComponent(JComponent component, Class<?> targetType) {
         if (component instanceof JTextField) {
             String text = ((JTextField) component).getText().trim();
             if (text.isEmpty()) return targetType == char.class ? 'A' : null;
-            
+
             if (targetType == int.class || targetType == Integer.class) {
-                try {
-                    return Integer.parseInt(text);
-                } catch (NumberFormatException e) {
-                    return 0;
-                }
+                try { return Integer.parseInt(text); } catch (NumberFormatException e) { return 0; }
             } else if (targetType == double.class || targetType == Double.class) {
-                try {
-                    return Double.parseDouble(text);
-                } catch (NumberFormatException e) {
-                    return 0.0;
-                }
+                try { return Double.parseDouble(text); } catch (NumberFormatException e) { return 0.0; }
             } else if (targetType == char.class) {
                 return text.length() > 0 ? text.charAt(0) : 'A';
             }
@@ -424,10 +402,10 @@ public class CrudScreenGenerator {
         } else if (component instanceof JSpinner) {
             return ((JSpinner) component).getValue();
         }
-        
+
         return null;
     }
-    
+
     private static void clearForm(Map<String, JComponent> fieldComponents) {
         for (JComponent component : fieldComponents.values()) {
             if (component instanceof JTextField) {
@@ -441,19 +419,18 @@ public class CrudScreenGenerator {
             }
         }
     }
-    
+
     private static <T> void deleteSelectedRecord(JTable table, CrudController<T> controller) {
         int selectedRow = table.getSelectedRow();
         if (selectedRow >= 0) {
-            int confirm = JOptionPane.showConfirmDialog(null, 
-                "Tem certeza que deseja excluir este registro?", 
-                "Confirmar Exclusão", 
-                JOptionPane.YES_NO_OPTION);
-            
+            int confirm = JOptionPane.showConfirmDialog(null,
+                    "Tem certeza que deseja excluir este registro?",
+                    "Confirmar Exclusão",
+                    JOptionPane.YES_NO_OPTION);
+
             if (confirm == JOptionPane.YES_OPTION) {
                 try {
-                    // Assumindo que a primeira coluna é o ID
-                    Object id = table.getValueAt(selectedRow, 0);
+                    Object id = table.getValueAt(selectedRow, 0); // Assumindo que a primeira coluna é o ID
                     controller.delete(id);
                     updateTable(table, controller);
                     JOptionPane.showMessageDialog(null, "Registro excluído com sucesso!");
@@ -465,18 +442,17 @@ public class CrudScreenGenerator {
             JOptionPane.showMessageDialog(null, "Selecione um registro para excluir.");
         }
     }
-    
+
     private static <T> void editSelectedRecord(JTable table, CrudController<T> controller) {
         int selectedRow = table.getSelectedRow();
         if (selectedRow >= 0) {
             try {
                 Object id = table.getValueAt(selectedRow, 0);
                 T record = controller.findById(id);
-                
                 if (record != null) {
                     // Aqui você pode implementar a lógica para popular o formulário com os dados
-                    JOptionPane.showMessageDialog(null, 
-                        "Funcionalidade de edição será implementada.\nRegistro ID: " + id);
+                    JOptionPane.showMessageDialog(null,
+                            "Funcionalidade de edição será implementada.\nRegistro ID: " + id);
                 }
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, "Erro ao carregar registro: " + e.getMessage());
