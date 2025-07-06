@@ -15,11 +15,9 @@ public class TelaCadastroProdutoCopa {
                 e.printStackTrace();
             }
             
-            // Criar repositório e controlador
             ProdutoCopaRepository repository = new ProdutoCopaRepository();
             CrudController<ProdutoCopa> controller = new CrudController<>(repository, ProdutoCopa.class);
             
-            // Gerar e exibir a tela CRUD
             JFrame crudScreen = CrudScreenGenerator.generateCrudScreen(controller);
             crudScreen.setVisible(true);
         });

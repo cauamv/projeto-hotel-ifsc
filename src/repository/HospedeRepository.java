@@ -11,7 +11,6 @@ public class HospedeRepository implements CrudRepository<Hospede> {
     private AtomicInteger idGenerator = new AtomicInteger(1);
     
     public HospedeRepository() {
-        // Dados de exemplo
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         String dataAtual = sdf.format(new Date());
         

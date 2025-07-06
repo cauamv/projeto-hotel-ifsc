@@ -389,14 +389,13 @@ public class CrudScreenGenerator {
         return null;
     }
 
-    // Dentro da classe CrudScreenGenerator.java
     private static Object getValueFromComponent(JComponent component, Class<?> targetType) {
         if (component instanceof JTextField) {
             String text = ((JTextField) component).getText().trim();
             if (text.isEmpty()) {
                 if (targetType == char.class) {
-                    return 'A'; // Valor padrão para char se vazio
-                }            // Para outros tipos, retorna null se o campo estiver vazio
+                    return 'A'; 
+                }           
                 return null;
             }
 
@@ -404,28 +403,23 @@ public class CrudScreenGenerator {
                 try {
                     return Integer.parseInt(text);
                 } catch (NumberFormatException e) {
-                    return 0; // Retorna 0 se o texto não for um número válido
+                    return 0; 
                 }
             } else if (targetType == double.class || targetType == Double.class) {
                 try {
-                    // Substitui vírgula por ponto para o padrão brasileiro
                     return Double.parseDouble(text.replace(',', '.'));
                 } catch (NumberFormatException e) {
-                    return 0.0; // Retorna 0.0 se o texto não for um número válido
+                    return 0.0; 
                 }
-                // <<<<<<<<<<<<<<<<<<<<<<<<<<<< ADICIONE ESTE BLOCO <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
             } else if (targetType == float.class || targetType == Float.class) {
                 try {
-                    // Substitui vírgula por ponto para o padrão brasileiro
                     return Float.parseFloat(text.replace(',', '.'));
                 } catch (NumberFormatException e) {
-                    return 0.0f; // Retorna 0.0f se o texto não for um número válido
+                    return 0.0f; 
                 }
-                // <<<<<<<<<<<<<<<<<<<<<<<<<<<< FIM DO BLOCO NOVO <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
             } else if (targetType == char.class) {
                 return text.length() > 0 ? text.charAt(0) : 'A';
             }
-            // Se não for nenhum tipo numérico, retorna o próprio texto
             return text;
 
         } else if (component instanceof JPasswordField) {

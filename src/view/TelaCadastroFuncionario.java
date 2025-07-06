@@ -15,11 +15,9 @@ public class TelaCadastroFuncionario {
                 e.printStackTrace();
             }
             
-            // Criar repositório e controlador
             FuncionarioRepository repository = new FuncionarioRepository();
             CrudController<Funcionario> controller = new CrudController<>(repository, Funcionario.class);
             
-            // Gerar e exibir a tela CRUD
             JFrame crudScreen = CrudScreenGenerator.generateCrudScreen(controller);
             crudScreen.setVisible(true);
         });

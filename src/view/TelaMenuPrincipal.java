@@ -8,7 +8,6 @@ package view;
 import generator.CrudController;
 import generator.CrudScreenGenerator;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import model.Fornecedor;
 import model.Funcionario;
 import model.Hospede;

@@ -16,11 +16,9 @@ public class TelaCadastroServico {
                 e.printStackTrace();
             }
             
-            // Criar repositório e controlador
             ServicoRepository repository = new ServicoRepository();
             CrudController<Servico> controller = new CrudController<>(repository, Servico.class);
             
-            // Gerar e exibir a tela CRUD
             JFrame crudScreen = CrudScreenGenerator.generateCrudScreen(controller);
             crudScreen.setVisible(true);
         });

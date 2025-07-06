@@ -14,11 +14,9 @@ public class TelaCadastroHospede {
                 e.printStackTrace();
             }
             
-            // Criar repositório e controlador
             HospedeRepository repository = new HospedeRepository();
             CrudController<Hospede> controller = new CrudController<>(repository, Hospede.class);
             
-            // Gerar e exibir a tela CRUD
             JFrame crudScreen = CrudScreenGenerator.generateCrudScreen(controller);
             crudScreen.setVisible(true);
         });
