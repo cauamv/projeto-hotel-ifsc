@@ -14,9 +14,9 @@ public @interface CrudField {
     boolean editable() default true;       // Se o campo pode ser editado no formulário
     boolean required() default false;
     int order() default 0;
-    String type() default "TEXT"; // TEXT, NUMBER, DATE, BOOLEAN, PASSWORD, CHAR
+    String type() default "TEXT";          // TEXT, NUMBER, DATE, BOOLEAN, PASSWORD, CHAR
     int maxLength() default 0;
-    int tableOrder() default 0;           // Ordem específica para tabela
+    int tableOrder() default 0;            // Ordem específica para tabela
     boolean mask() default false;
-    String typeMask() default "TELEFONE";
+    String typeMask() default "TELEFONE";  // CPF, CNPJ, TELEFONE, CEP, RG, DATE 
 }

@@ -1,4 +1,3 @@
-// Arquivo: generator/CrudScreenGenerator.java
 package generator;
 
 import javax.swing.*;
@@ -11,6 +10,8 @@ import java.util.*;
 import java.util.List;
 import java.text.SimpleDateFormat;
 import java.util.stream.Collectors;
+import javax.swing.text.MaskFormatter;
+import javax.swing.JFormattedTextField;
 
 public class CrudScreenGenerator {
 
@@ -26,17 +27,12 @@ public class CrudScreenGenerator {
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setLayout(new BorderLayout());
 
-        // << CORRIGIDO: A tabela agora é criada aqui no método principal
         JTable table = new JTable();
-
-        // Painel principal dividido
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
 
-        // << CORRIGIDO: A tabela é passada como parâmetro para quem precisa dela
         JPanel tablePanel = createTablePanel(table, controller);
         JPanel formPanel = createFormPanel(table, controller);
 
-        // Painel do formulário (lado direito)
         JScrollPane formScrollPane = new JScrollPane(formPanel);
         formScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 
@@ -51,17 +47,13 @@ public class CrudScreenGenerator {
         return frame;
     }
 
-    // << CORRIGIDO: O método agora recebe a JTable em vez de criar uma
     private static <T> JPanel createTablePanel(JTable table, CrudController<T> controller) {
         JPanel panel = new JPanel(new BorderLayout());
 
-        // JTable table = new JTable(); // << CORRIGIDO: Esta linha foi removida
         updateTable(table, controller);
 
-        // Configurar seleção da tabela
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-        // Botões da tabela
         JPanel buttonPanel = new JPanel(new FlowLayout());
         JButton refreshButton = new JButton("Atualizar");
         JButton deleteButton = new JButton("Excluir");
@@ -81,15 +73,12 @@ public class CrudScreenGenerator {
         return panel;
     }
 
-    // << CORRIGIDO: O método do formulário também recebe a tabela para poder passar adiante
     private static <T> JPanel createFormPanel(JTable table, CrudController<T> controller) {
         JPanel panel = new JPanel(new BorderLayout());
         panel.setBorder(BorderFactory.createTitledBorder("Formulário"));
 
-        // Obter todos os campos incluindo da classe pai
         List<Field> fields = getAllFieldsFromClassHierarchy(controller.getEntityClass());
 
-        // Debug: imprimir campos encontrados
         System.out.println("=== CAMPOS ENCONTRADOS ===");
         for (Field field : fields) {
             CrudField annotation = field.getAnnotation(CrudField.class);
@@ -100,7 +89,6 @@ public class CrudScreenGenerator {
         }
         System.out.println("=========================");
 
-        // Criar componentes do formulário
         JPanel formFieldsPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
@@ -111,7 +99,9 @@ public class CrudScreenGenerator {
         int row = 0;
         for (Field field : fields) {
             CrudField annotation = field.getAnnotation(CrudField.class);
-            if (annotation != null && !annotation.editable()) continue;
+            if (annotation != null && !annotation.editable()) {
+                continue;
+            }
 
             String label = annotation != null && !annotation.label().isEmpty()
                     ? annotation.label()
@@ -140,12 +130,10 @@ public class CrudScreenGenerator {
             row++;
         }
 
-        // Botões do formulário
         JPanel buttonPanel = new JPanel(new FlowLayout());
         JButton saveButton = new JButton("Salvar");
         JButton clearButton = new JButton("Limpar");
 
-        // << CORRIGIDO: A tabela é passada para o método saveRecord
         saveButton.addActionListener(e -> saveRecord(table, fieldComponents, controller));
         clearButton.addActionListener(e -> clearForm(fieldComponents));
 
@@ -160,54 +148,80 @@ public class CrudScreenGenerator {
 
     private static List<Field> getAllFieldsFromClassHierarchy(Class<?> clazz) {
         List<Field> allFields = new ArrayList<>();
-
         Class<?> currentClass = clazz;
         while (currentClass != null && currentClass != Object.class) {
             System.out.println("Analisando classe: " + currentClass.getSimpleName());
-
             Field[] declaredFields = currentClass.getDeclaredFields();
             System.out.println("Campos declarados em " + currentClass.getSimpleName() + ": " + declaredFields.length);
-
             for (Field field : declaredFields) {
                 if (!field.isSynthetic()) {
-                    CrudField annotation = field.getAnnotation(CrudField.class);
-                    boolean isVisible = (annotation == null) || annotation.visible();
-                    if (isVisible) {
-                        System.out.println("  -> Adicionando campo: " + field.getName() + " (Classe: " + currentClass.getSimpleName() + ")");
-                        allFields.add(field);
-                    } else {
-                        System.out.println("  -> Campo ignorado (não visível): " + field.getName());
-                    }
+                    System.out.println("  -> Adicionando campo: " + field.getName() + " (Classe: " + currentClass.getSimpleName() + ")");
+                    allFields.add(field);
                 }
             }
             currentClass = currentClass.getSuperclass();
         }
-
         allFields.sort((f1, f2) -> {
             CrudField a1 = f1.getAnnotation(CrudField.class);
             CrudField a2 = f2.getAnnotation(CrudField.class);
             int order1 = a1 != null ? a1.order() : Integer.MAX_VALUE;
             int order2 = a2 != null ? a2.order() : Integer.MAX_VALUE;
-
             if (order1 != order2) {
                 return Integer.compare(order1, order2);
             }
             return f1.getName().compareTo(f2.getName());
         });
-
         return allFields;
     }
 
     private static JComponent createFieldComponent(Field field, CrudField annotation) {
+        if (annotation != null && annotation.mask()) {
+            String maskType = annotation.typeMask(); 
+            String maskPattern = "";
+
+            switch (maskType.toUpperCase()) {
+                case "CPF":
+                    maskPattern = "###.###.###-##";
+                    break;
+
+                case "CNPJ":
+                    maskPattern = "##.###.###/####-##";
+                    break;
+
+                case "TELEFONE":
+                    maskPattern = "(##) #####-####";
+                    break;
+
+                case "CEP":
+                    maskPattern = "#####-###";
+                    break;
+
+                case "RG":
+                    maskPattern = "##.###.###-#";
+                    break;
+
+                case "DATE":
+                    maskPattern = "##/##/####";
+                    break;
+            } 
+
+            if (!maskPattern.isEmpty()) {
+                try {
+                    MaskFormatter formatter = new MaskFormatter(maskPattern);
+                    formatter.setPlaceholderCharacter('_');
+                    return new JFormattedTextField(formatter);
+                } catch (java.text.ParseException e) {
+                }
+            }
+        }
+
         String type = annotation != null ? annotation.type() : "TEXT";
         Class<?> fieldType = field.getType();
         int maxLength = annotation != null ? annotation.maxLength() : 0;
-        boolean mask = annotation != null ? annotation.mask() : false;
 
         switch (type.toUpperCase()) {
             case "PASSWORD":
                 return new JPasswordField(20);
-
             case "NUMBER":
                 if (fieldType == int.class || fieldType == Integer.class) {
                     return new JSpinner(new SpinnerNumberModel(0, Integer.MIN_VALUE, Integer.MAX_VALUE, 1));
@@ -215,10 +229,8 @@ public class CrudScreenGenerator {
                     return new JSpinner(new SpinnerNumberModel(0.0, -Double.MAX_VALUE, Double.MAX_VALUE, 0.1));
                 }
                 return new JTextField(20);
-
             case "BOOLEAN":
                 return new JCheckBox();
-
             case "CHAR":
                 JTextField charField = new JTextField(1);
                 charField.setDocument(new javax.swing.text.PlainDocument() {
@@ -230,12 +242,10 @@ public class CrudScreenGenerator {
                     }
                 });
                 return charField;
-
             case "DATE":
                 JTextField dateField = new JTextField(20);
                 dateField.setToolTipText("Formato: dd/MM/yyyy");
                 return dateField;
-
             default:
                 JTextField textField = new JTextField(20);
                 if (maxLength > 0) {
@@ -248,12 +258,6 @@ public class CrudScreenGenerator {
                         }
                     });
                 }
-                
-                if (mask) {
-                    case "TELEFONE":
-                    textField.set 
-                }
-                
                 return textField;
         }
     }
@@ -330,30 +334,27 @@ public class CrudScreenGenerator {
         }
     }
 
-    // << CORRIGIDO: O método saveRecord agora recebe a JTable
     private static <T> void saveRecord(JTable table, Map<String, JComponent> fieldComponents, CrudController<T> controller) {
         try {
             T instance = controller.getEntityClass().getDeclaredConstructor().newInstance();
-
             List<Field> allFields = getAllFieldsFromClassHierarchy(controller.getEntityClass());
-
             for (Field field : allFields) {
                 if (fieldComponents.containsKey(field.getName())) {
                     field.setAccessible(true);
                     JComponent component = fieldComponents.get(field.getName());
+                    // Chamada para o método alterado
                     Object value = getValueFromComponent(component, field.getType());
                     if (value != null) {
                         field.set(instance, value);
                     }
                 }
             }
-
             try {
                 Field dataCadastroField = findFieldInHierarchy(controller.getEntityClass(), "dataCadastro");
                 if (dataCadastroField != null) {
                     dataCadastroField.setAccessible(true);
-                    String currentDate = dataCadastroField.get(instance) != null ?
-                            (String) dataCadastroField.get(instance) : "";
+                    String currentDate = dataCadastroField.get(instance) != null
+                            ? (String) dataCadastroField.get(instance) : "";
                     if (currentDate == null || currentDate.isEmpty()) {
                         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
                         dataCadastroField.set(instance, sdf.format(new java.util.Date()));
@@ -366,9 +367,8 @@ public class CrudScreenGenerator {
             controller.create(instance);
             clearForm(fieldComponents);
 
-            // << CORRIGIDO: A chamada para updateTable agora passa a referência correta da tabela
             updateTable(table, controller);
-            
+
             JOptionPane.showMessageDialog(null, "Registro salvo com sucesso!");
 
         } catch (Exception e) {
@@ -390,14 +390,32 @@ public class CrudScreenGenerator {
     }
 
     private static Object getValueFromComponent(JComponent component, Class<?> targetType) {
+        if (component instanceof JFormattedTextField) {
+            String text = ((JFormattedTextField) component).getText();
+            if (text.contains("_")) {
+                return null;
+            }
+            return text;
+        }
+
         if (component instanceof JTextField) {
             String text = ((JTextField) component).getText().trim();
-            if (text.isEmpty()) return targetType == char.class ? 'A' : null;
+            if (text.isEmpty()) {
+                return targetType == char.class ? 'A' : null;
+            }
 
             if (targetType == int.class || targetType == Integer.class) {
-                try { return Integer.parseInt(text); } catch (NumberFormatException e) { return 0; }
+                try {
+                    return Integer.parseInt(text);
+                } catch (NumberFormatException e) {
+                    return 0;
+                }
             } else if (targetType == double.class || targetType == Double.class) {
-                try { return Double.parseDouble(text); } catch (NumberFormatException e) { return 0.0; }
+                try {
+                    return Double.parseDouble(text);
+                } catch (NumberFormatException e) {
+                    return 0.0;
+                }
             } else if (targetType == char.class) {
                 return text.length() > 0 ? text.charAt(0) : 'A';
             }
@@ -412,7 +430,7 @@ public class CrudScreenGenerator {
 
         return null;
     }
-
+    
     private static void clearForm(Map<String, JComponent> fieldComponents) {
         for (JComponent component : fieldComponents.values()) {
             if (component instanceof JTextField) {
@@ -437,7 +455,7 @@ public class CrudScreenGenerator {
 
             if (confirm == JOptionPane.YES_OPTION) {
                 try {
-                    Object id = table.getValueAt(selectedRow, 0); // Assumindo que a primeira coluna é o ID
+                    Object id = table.getValueAt(selectedRow, 0);
                     controller.delete(id);
                     updateTable(table, controller);
                     JOptionPane.showMessageDialog(null, "Registro excluído com sucesso!");
@@ -457,7 +475,6 @@ public class CrudScreenGenerator {
                 Object id = table.getValueAt(selectedRow, 0);
                 T record = controller.findById(id);
                 if (record != null) {
-                    // Aqui você pode implementar a lógica para popular o formulário com os dados
                     JOptionPane.showMessageDialog(null,
                             "Funcionalidade de edição será implementada.\nRegistro ID: " + id);
                 }
