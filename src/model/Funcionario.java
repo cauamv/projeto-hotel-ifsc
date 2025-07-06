@@ -1,7 +1,15 @@
 package model;
+
+import generator.CrudEntity;
+import generator.CrudField;
+
+@CrudEntity(tableName = "funcionarios", displayName = "Funcionarios")
 public class Funcionario extends Pessoa{
-   
+    
+    @CrudField(label = "Usuário", required = true, order = 16, maxLength = 40, showInTable = true, tableOrder = 2)
     private String usuario;
+    
+    @CrudField(label = "Senha", required = true, order = 17, maxLength = 15,type = "PASSWORD", showInTable = false, tableOrder = 2)
     private String senha;
 
     public Funcionario() {
@@ -13,7 +21,7 @@ public class Funcionario extends Pessoa{
         this.usuario = usuario;
         this.senha = senha;
     }
-
+    
     public String getUsuario() {
         return usuario;
     }
@@ -37,10 +45,4 @@ public class Funcionario extends Pessoa{
                 "\nUsuário = " + this.getUsuario()+
                 "\nSenha   = " + this.getSenha();
     }
-    
-    
-    
-    
-    
-    
 }

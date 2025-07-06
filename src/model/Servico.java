@@ -1,10 +1,16 @@
 package model;
 
-public class Servico {
+import generator.CrudField;
 
+public class Servico {
+    
+    @CrudField(label = "ID", editable = false, order = 1, type = "NUMBER", showInTable = true, tableOrder = 1)
     private int id;
+    @CrudField(label = "Descrição", required = true, order = 2, maxLength = 100, showInTable = true, tableOrder = 2)
     private String descricao;
+    @CrudField(label = "Valor", required = true, order = 3,type="NUMBER", maxLength = 6, showInTable = true, tableOrder = 3)
     private float valor;
+    @CrudField(label = "Status", order = 4, type = "CHAR", showInTable = true, tableOrder = 4)
     private char status;
 
     public int getId() {

@@ -176,7 +176,7 @@ public class CrudScreenGenerator {
 
     private static JComponent createFieldComponent(Field field, CrudField annotation) {
         if (annotation != null && annotation.mask()) {
-            String maskType = annotation.typeMask(); 
+            String maskType = annotation.typeMask();
             String maskPattern = "";
 
             switch (maskType.toUpperCase()) {
@@ -203,7 +203,7 @@ public class CrudScreenGenerator {
                 case "DATE":
                     maskPattern = "##/##/####";
                     break;
-            } 
+            }
 
             if (!maskPattern.isEmpty()) {
                 try {
@@ -389,37 +389,45 @@ public class CrudScreenGenerator {
         return null;
     }
 
+    // Dentro da classe CrudScreenGenerator.java
     private static Object getValueFromComponent(JComponent component, Class<?> targetType) {
-        if (component instanceof JFormattedTextField) {
-            String text = ((JFormattedTextField) component).getText();
-            if (text.contains("_")) {
-                return null;
-            }
-            return text;
-        }
-
         if (component instanceof JTextField) {
             String text = ((JTextField) component).getText().trim();
             if (text.isEmpty()) {
-                return targetType == char.class ? 'A' : null;
+                if (targetType == char.class) {
+                    return 'A'; // Valor padrão para char se vazio
+                }            // Para outros tipos, retorna null se o campo estiver vazio
+                return null;
             }
 
             if (targetType == int.class || targetType == Integer.class) {
                 try {
                     return Integer.parseInt(text);
                 } catch (NumberFormatException e) {
-                    return 0;
+                    return 0; // Retorna 0 se o texto não for um número válido
                 }
             } else if (targetType == double.class || targetType == Double.class) {
                 try {
-                    return Double.parseDouble(text);
+                    // Substitui vírgula por ponto para o padrão brasileiro
+                    return Double.parseDouble(text.replace(',', '.'));
                 } catch (NumberFormatException e) {
-                    return 0.0;
+                    return 0.0; // Retorna 0.0 se o texto não for um número válido
                 }
+                // <<<<<<<<<<<<<<<<<<<<<<<<<<<< ADICIONE ESTE BLOCO <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+            } else if (targetType == float.class || targetType == Float.class) {
+                try {
+                    // Substitui vírgula por ponto para o padrão brasileiro
+                    return Float.parseFloat(text.replace(',', '.'));
+                } catch (NumberFormatException e) {
+                    return 0.0f; // Retorna 0.0f se o texto não for um número válido
+                }
+                // <<<<<<<<<<<<<<<<<<<<<<<<<<<< FIM DO BLOCO NOVO <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
             } else if (targetType == char.class) {
                 return text.length() > 0 ? text.charAt(0) : 'A';
             }
+            // Se não for nenhum tipo numérico, retorna o próprio texto
             return text;
+
         } else if (component instanceof JPasswordField) {
             return new String(((JPasswordField) component).getPassword());
         } else if (component instanceof JCheckBox) {
@@ -430,7 +438,7 @@ public class CrudScreenGenerator {
 
         return null;
     }
-    
+
     private static void clearForm(Map<String, JComponent> fieldComponents) {
         for (JComponent component : fieldComponents.values()) {
             if (component instanceof JTextField) {
