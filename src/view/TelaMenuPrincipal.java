@@ -11,8 +11,10 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import model.Hospede;
 import model.ProdutoCopa;
+import model.Servico;
 import repository.HospedeRepository;
 import repository.ProdutoCopaRepository;
+import repository.ServicoRepository;
 
 
 public class TelaMenuPrincipal extends javax.swing.JFrame {
@@ -154,7 +156,10 @@ public class TelaMenuPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        JOptionPane.showMessageDialog(null, "Não há :C");
+        ServicoRepository repository = new ServicoRepository();
+        CrudController<Servico> controller = new CrudController<>(repository, Servico.class);
+        JFrame crudScreen = CrudScreenGenerator.generateCrudScreen(controller);
+        crudScreen.setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     public static void main(String args[]) {
