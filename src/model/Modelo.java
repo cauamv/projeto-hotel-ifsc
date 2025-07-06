@@ -3,7 +3,7 @@ package model;
 import generator.CrudEntity;
 import generator.CrudField;
 
-@CrudEntity(tableName = "quartos", displayName = "Quartos")
+@CrudEntity(tableName = "modelos", displayName = "Modelos")
 public class Modelo {
 
     @CrudField(label = "ID", editable = false, order = 1, type = "NUMBER", showInTable = true, tableOrder = 1)
