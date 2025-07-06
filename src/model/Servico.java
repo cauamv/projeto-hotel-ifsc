@@ -1,7 +1,9 @@
 package model;
 
+import generator.CrudEntity;
 import generator.CrudField;
 
+@CrudEntity(tableName = "serviços", displayName = "Serviços")
 public class Servico {
     
     @CrudField(label = "ID", editable = false, order = 1, type = "NUMBER", showInTable = true, tableOrder = 1)
