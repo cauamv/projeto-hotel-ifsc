@@ -16,6 +16,7 @@ import model.Marca;
 import model.Modelo;
 import model.Veiculo;
 import model.ProdutoCopa;
+import model.Quarto;
 import model.Servico;
 import model.VagaEstacionamento;
 import repository.FornecedorRepository;
@@ -25,6 +26,7 @@ import repository.MarcaRepository;
 import repository.ModeloRepository;
 import repository.VeiculoRepository;
 import repository.ProdutoCopaRepository;
+import repository.QuartoRepository;
 import repository.ServicoRepository;
 import repository.VagaRepository;
 
@@ -44,10 +46,12 @@ public class TelaMenuPrincipal extends javax.swing.JFrame {
         jMenu2 = new javax.swing.JMenu();
         jMenuItemProduto = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
-        jMenuItemFornecedor = new javax.swing.JMenuItem();
+        jMenuItemQuarto = new javax.swing.JMenuItem();
         jMenuItemHospede = new javax.swing.JMenuItem();
-        jMenuItemFuncionario = new javax.swing.JMenuItem();
         jMenuItemServicos = new javax.swing.JMenuItem();
+        jSeparator5 = new javax.swing.JPopupMenu.Separator();
+        jMenuItemFornecedor = new javax.swing.JMenuItem();
+        jMenuItemFuncionario = new javax.swing.JMenuItem();
         jSeparator4 = new javax.swing.JPopupMenu.Separator();
         jMenuVagaEstacionamento = new javax.swing.JMenuItem();
         jMenuMarcaVeiculo = new javax.swing.JMenuItem();
@@ -76,14 +80,14 @@ public class TelaMenuPrincipal extends javax.swing.JFrame {
         jMenu2.add(jMenuItemProduto);
         jMenu2.add(jSeparator1);
 
-        jMenuItemFornecedor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/Delivery.png"))); // NOI18N
-        jMenuItemFornecedor.setText("Fornecedor");
-        jMenuItemFornecedor.addActionListener(new java.awt.event.ActionListener() {
+        jMenuItemQuarto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/Key.png"))); // NOI18N
+        jMenuItemQuarto.setText("Quarto");
+        jMenuItemQuarto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItemFornecedorActionPerformed(evt);
+                jMenuItemQuartoActionPerformed(evt);
             }
         });
-        jMenu2.add(jMenuItemFornecedor);
+        jMenu2.add(jMenuItemQuarto);
 
         jMenuItemHospede.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/People.png"))); // NOI18N
         jMenuItemHospede.setText("Hóspede");
@@ -94,15 +98,6 @@ public class TelaMenuPrincipal extends javax.swing.JFrame {
         });
         jMenu2.add(jMenuItemHospede);
 
-        jMenuItemFuncionario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/Boss.png"))); // NOI18N
-        jMenuItemFuncionario.setText("Funcionário");
-        jMenuItemFuncionario.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItemFuncionarioActionPerformed(evt);
-            }
-        });
-        jMenu2.add(jMenuItemFuncionario);
-
         jMenuItemServicos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/Phone.png"))); // NOI18N
         jMenuItemServicos.setText("Serviços");
         jMenuItemServicos.addActionListener(new java.awt.event.ActionListener() {
@@ -111,6 +106,25 @@ public class TelaMenuPrincipal extends javax.swing.JFrame {
             }
         });
         jMenu2.add(jMenuItemServicos);
+        jMenu2.add(jSeparator5);
+
+        jMenuItemFornecedor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/Delivery.png"))); // NOI18N
+        jMenuItemFornecedor.setText("Fornecedor");
+        jMenuItemFornecedor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemFornecedorActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItemFornecedor);
+
+        jMenuItemFuncionario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/Boss.png"))); // NOI18N
+        jMenuItemFuncionario.setText("Funcionário");
+        jMenuItemFuncionario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemFuncionarioActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItemFuncionario);
         jMenu2.add(jSeparator4);
 
         jMenuVagaEstacionamento.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/Blue tag.png"))); // NOI18N
@@ -258,17 +272,18 @@ public class TelaMenuPrincipal extends javax.swing.JFrame {
         crudScreen.setVisible(true);
     }//GEN-LAST:event_jMenuItemVeiculoActionPerformed
 
+    private void jMenuItemQuartoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemQuartoActionPerformed
+        QuartoRepository repository = new QuartoRepository();
+        CrudController<Quarto> controller = new CrudController<>(repository, Quarto.class);
+        JFrame crudScreen = CrudScreenGenerator.generateCrudScreen(controller);
+        crudScreen.setVisible(true);
+    }//GEN-LAST:event_jMenuItemQuartoActionPerformed
+
     public static void main(String args[]) {
-        // Traduz os botões padrão do JOptionPane para português
         UIManager.put("OptionPane.yesButtonText", "Sim");
         UIManager.put("OptionPane.noButtonText", "Não");
         UIManager.put("OptionPane.cancelButtonText", "Cancelar"); // <-- Já traduzi o "Cancelar" de bônus!
         UIManager.put("OptionPane.okButtonText", "OK");       // <-- E o "OK" também.
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Metal".equals(info.getName())) {
@@ -285,9 +300,7 @@ public class TelaMenuPrincipal extends javax.swing.JFrame {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(TelaMenuPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
 
-        /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new TelaMenuPrincipal().setVisible(true);
@@ -307,6 +320,7 @@ public class TelaMenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItemHospede;
     private javax.swing.JMenuItem jMenuItemModeloVeiculo;
     private javax.swing.JMenuItem jMenuItemProduto;
+    private javax.swing.JMenuItem jMenuItemQuarto;
     private javax.swing.JMenuItem jMenuItemSair;
     private javax.swing.JMenuItem jMenuItemServicos;
     private javax.swing.JMenuItem jMenuItemVeiculo;
@@ -316,5 +330,6 @@ public class TelaMenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JPopupMenu.Separator jSeparator4;
+    private javax.swing.JPopupMenu.Separator jSeparator5;
     // End of variables declaration//GEN-END:variables
 }

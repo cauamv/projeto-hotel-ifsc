@@ -48,7 +48,7 @@ public class Pessoa {
     @CrudField(label = "Observações", order = 14, maxLength = 500)
     private String obs;
 
-    @CrudField(label = "Status", order = 15, type = "CHAR", showInTable = true, tableOrder = 6)
+    @CrudField(label = "Status", order = 15, type = "STATUS_CHAR", showInTable = true, tableOrder = 6)
     private char status;
 
     public Pessoa() {

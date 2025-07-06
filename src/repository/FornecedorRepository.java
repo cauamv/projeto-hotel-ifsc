@@ -20,25 +20,25 @@ public class FornecedorRepository implements CrudRepository<Fornecedor> {
         String dataAtual = sdf.format(new Date());
 
         Fornecedor f1 = new Fornecedor(
-                0, // id (0 para ser gerado automaticamente)
-                "LimpaTudo Produtos de Limpeza", // nome (fantasia)
-                "(48) 3344-5566", // fone1
-                "", // fone2
-                "contato@limpatudo.com", // email
-                "88010-000", // cep
-                "Rua das Indústrias, 789", // logradouro
-                "Distrito Industrial", // bairro
-                "São José", // cidade
-                "Galpão 2", // complemento
-                dataAtual, // dataCadastro
-                "", // cpf (pessoa jurídica não tem)
-                "", // rg (pessoa jurídica não tem)
-                "LimpaTudo Comércio de Produtos de Higiene LTDA", // razaoSocial
-                "12.345.678/0001-99", // cnpj
-                "123.456.789.111", // inscricaoEstadual
-                "Sr. Mário", // contato
-                "Fornecedor de material de limpeza geral.", // obs
-                'A' // status
+                0, 
+                "LimpaTudo Produtos de Limpeza", 
+                "(48) 3344-5566", 
+                "", 
+                "contato@limpatudo.com", 
+                "88010-000", 
+                "Rua das Indústrias, 789",
+                "Distrito Industrial", 
+                "São José", 
+                "Galpão 2", 
+                dataAtual,
+                "", 
+                "", 
+                "LimpaTudo Comércio de Produtos de Higiene LTDA", 
+                "12.345.678/0001-99", 
+                "123.456.789.111", 
+                "Sr. Mário", 
+                "Fornecedor de material de limpeza geral.", 
+                'A' 
         );
 
         save(f1);

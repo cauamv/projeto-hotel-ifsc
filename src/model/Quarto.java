@@ -10,17 +10,17 @@ public class Quarto {
     private int id;
     @CrudField(label = "Descrição", required = true, order = 2, maxLength = 100, showInTable = true, tableOrder = 2)
     private String descricao;
-    @CrudField(label = "Capacidade", required = true,type = "NUMBER", order = 3, maxLength = 2, showInTable = true, tableOrder = 3)
+    @CrudField(label = "Capacidade", required = true, type = "NUMBER", order = 3, maxLength = 2, showInTable = true, tableOrder = 3)
     private int capacidadehospedes;
-    @CrudField(label = "Metragem", required = true, order = 4,type="NUMBER", maxLength = 7, showInTable = true, tableOrder = 4)
+    @CrudField(label = "Metragem", required = true, order = 4, typeMask = "METRAGEM", mask = true, maxLength = 7, showInTable = true, tableOrder = 4)
     private float metragem;
-    @CrudField(label = "Identificação",required = true,editable = true, order = 5, showInTable = true, tableOrder = 5, maxLength = 4)
+    @CrudField(label = "Identificação", required = true, editable = true, order = 5, showInTable = true, tableOrder = 5, maxLength = 4)
     private String identificacao;
-    @CrudField(label = "andar", editable = false,required = true,order = 6, type = "NUMBER", showInTable = true,maxLength = 2,tableOrder = 6)
+    @CrudField(label = "Andar", editable = true, required = true, order = 6, type = "NUMBER", showInTable = true, maxLength = 2, tableOrder = 6)
     private int andar;
-    @CrudField(label = "Disponível?", editable = true,required = true,order = 7, type = "BOOLEAN", showInTable = true,tableOrder = 7)
+    @CrudField(label = "Disponibilidade", editable = true, required = true, order = 7, type = "BOOLEAN", showInTable = true, tableOrder = 7)
     private boolean flagmanutencao;
-    @CrudField(label = "Status", order = 8, type = "CHAR", showInTable = true, tableOrder = 8)
+    @CrudField(label = "Status", order = 8, type = "STATUS_CHAR", showInTable = true, tableOrder = 8)
     private char status;
 
     public int getId() {

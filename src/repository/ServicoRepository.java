@@ -23,7 +23,7 @@ public class ServicoRepository implements CrudRepository<Servico> {
         Servico s2 = new Servico();
         s2.setDescricao("Estacionamento (diária)");
         s2.setValor(35.50f);
-        s2.setStatus('A');
+        s2.setStatus('I');
         save(s2);
 
         Servico s3 = new Servico();

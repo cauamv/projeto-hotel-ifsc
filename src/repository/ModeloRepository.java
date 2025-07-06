@@ -34,7 +34,7 @@ public class ModeloRepository implements CrudRepository<Modelo> {
 
         if (fiat != null) {
             save(new Modelo(0, "Argo", 'A', fiat));
-            save(new Modelo(0, "Strada", 'C', fiat)); // Exemplo de modelo inativo
+            save(new Modelo(0, "Strada", 'I', fiat)); // Exemplo de modelo inativo
         }
     }
 

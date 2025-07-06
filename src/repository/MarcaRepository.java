@@ -18,7 +18,7 @@ public class MarcaRepository implements CrudRepository<Marca> {
         Marca marca1 = new Marca(0, "Volkswagen", 'A');
         Marca marca2 = new Marca(0, "Chevrolet", 'A');
         Marca marca3 = new Marca(0, "Fiat", 'A');
-        Marca marca4 = new Marca(0, "Ford", 'C'); 
+        Marca marca4 = new Marca(0, "Ford", 'I'); 
 
         save(marca1);
         save(marca2);

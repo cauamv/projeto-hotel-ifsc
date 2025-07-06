@@ -13,11 +13,9 @@ public class TelaCadastroModelo{
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            // Criar repositório e controlador
             ModeloRepository repository = new ModeloRepository();
             CrudController<Modelo> controller = new CrudController<>(repository, Modelo.class);
             
-            // Gerar e exibir a tela CRUD
             JFrame crudScreen = CrudScreenGenerator.generateCrudScreen(controller);
             crudScreen.setVisible(true);
         });

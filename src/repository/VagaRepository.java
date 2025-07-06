@@ -16,8 +16,8 @@ public class VagaRepository implements CrudRepository<VagaEstacionamento> {
     public  VagaRepository() {
         VagaEstacionamento v1 = new VagaEstacionamento();
         v1.setDescricao("Vaga 01 - Coberta");
-        v1.setMetragemvaga(12.5f); // 5m x 2.5m
-        v1.setStatus('A'); // 'A' de Ativa/Disponível
+        v1.setMetragemvaga(12.5f); 
+        v1.setStatus('A'); 
         save(v1);
 
         VagaEstacionamento v2 = new VagaEstacionamento();
@@ -28,14 +28,14 @@ public class VagaRepository implements CrudRepository<VagaEstacionamento> {
 
         VagaEstacionamento v3 = new VagaEstacionamento();
         v3.setDescricao("Vaga Moto 01");
-        v3.setMetragemvaga(3.0f); // 2m x 1.5m
+        v3.setMetragemvaga(3.0f); 
         v3.setStatus('A');
         save(v3);
 
         VagaEstacionamento v4 = new VagaEstacionamento();
         v4.setDescricao("Vaga 03 - Em manutenção");
         v4.setMetragemvaga(12.5f);
-        v4.setStatus('C'); // 'C' de Cancelada/Inativa
+        v4.setStatus('I'); 
         save(v4);
     }
 

@@ -10,7 +10,7 @@ public class Modelo {
     private int id;
     @CrudField(label = "Descrição", required = true, order = 2, maxLength = 100, showInTable = true, tableOrder = 2)
     private String descricao;
-    @CrudField(label = "Status", required = true, order = 3, type = "CHAR", maxLength = 1, showInTable = true, tableOrder = 3)
+    @CrudField(label = "Status", required = true, order = 3, type = "STATUS_CHAR", maxLength = 1, showInTable = true, tableOrder = 3)
     private char status;
     @CrudField(label = "Marca", order = 4, type = "COMBOBOX", itemsClass = Marca.class, tableOrder = 4)
     private Marca marca;

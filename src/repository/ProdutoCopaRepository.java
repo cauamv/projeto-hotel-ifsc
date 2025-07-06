@@ -16,7 +16,7 @@ public class ProdutoCopaRepository implements CrudRepository<ProdutoCopa> {
     public ProdutoCopaRepository() {
         ProdutoCopa p1 = new ProdutoCopa();
         p1.setDescricao("Coca-Cola Lata 350ml");
-        p1.setValor(5.50f); // 'f' no final para indicar que é um float
+        p1.setValor(5.50f);
         p1.setObs("Servir gelado");
         p1.setStatus('A');
         save(p1);
@@ -39,7 +39,7 @@ public class ProdutoCopaRepository implements CrudRepository<ProdutoCopa> {
         p4.setDescricao("Suco de Laranja 1L (Fora de estoque)");
         p4.setValor(12.00f);
         p4.setObs("Produto descontinuado");
-        p4.setStatus('C');
+        p4.setStatus('I');
         save(p4);
     }
 

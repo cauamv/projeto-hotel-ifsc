@@ -16,11 +16,9 @@ public class TelaCadastroQuarto{
                 e.printStackTrace();
             }
             
-            // Criar repositório e controlador
             QuartoRepository repository = new QuartoRepository();
             CrudController<Quarto> controller = new CrudController<>(repository, Quarto.class);
             
-            // Gerar e exibir a tela CRUD
             JFrame crudScreen = CrudScreenGenerator.generateCrudScreen(controller);
             crudScreen.setVisible(true);
         });
