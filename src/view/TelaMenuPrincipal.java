@@ -9,14 +9,20 @@ import generator.CrudController;
 import generator.CrudScreenGenerator;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import model.Fornecedor;
 import model.Funcionario;
 import model.Hospede;
+import model.Marca;
 import model.ProdutoCopa;
 import model.Servico;
+import model.VagaEstacionamento;
+import repository.FornecedorRepository;
 import repository.FuncionarioRepository;
 import repository.HospedeRepository;
+import repository.MarcaRepository;
 import repository.ProdutoCopaRepository;
 import repository.ServicoRepository;
+import repository.VagaRepository;
 
 
 public class TelaMenuPrincipal extends javax.swing.JFrame {
@@ -31,14 +37,18 @@ public class TelaMenuPrincipal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jSeparator3 = new javax.swing.JSeparator();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu2 = new javax.swing.JMenu();
         jMenuItemProduto = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
-        jMenuItem4 = new javax.swing.JMenuItem();
-        jMenuItem5 = new javax.swing.JMenuItem();
-        jMenuItem6 = new javax.swing.JMenuItem();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItemFornecedor = new javax.swing.JMenuItem();
+        jMenuItemHospede = new javax.swing.JMenuItem();
+        jMenuItemFuncionario = new javax.swing.JMenuItem();
+        jMenuItemServicos = new javax.swing.JMenuItem();
+        jSeparator4 = new javax.swing.JPopupMenu.Separator();
+        jMenuVagaEstacionamento = new javax.swing.JMenuItem();
+        jMenuMarcaVeiculo = new javax.swing.JMenuItem();
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
         jMenuItemSair = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
@@ -62,41 +72,60 @@ public class TelaMenuPrincipal extends javax.swing.JFrame {
         jMenu2.add(jMenuItemProduto);
         jMenu2.add(jSeparator1);
 
-        jMenuItem4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/Delivery.png"))); // NOI18N
-        jMenuItem4.setText("Fornecedor");
-        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+        jMenuItemFornecedor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/Delivery.png"))); // NOI18N
+        jMenuItemFornecedor.setText("Fornecedor");
+        jMenuItemFornecedor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem4ActionPerformed(evt);
+                jMenuItemFornecedorActionPerformed(evt);
             }
         });
-        jMenu2.add(jMenuItem4);
+        jMenu2.add(jMenuItemFornecedor);
 
-        jMenuItem5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/People.png"))); // NOI18N
-        jMenuItem5.setText("Hóspede");
-        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+        jMenuItemHospede.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/People.png"))); // NOI18N
+        jMenuItemHospede.setText("Hóspede");
+        jMenuItemHospede.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem5ActionPerformed(evt);
+                jMenuItemHospedeActionPerformed(evt);
             }
         });
-        jMenu2.add(jMenuItem5);
+        jMenu2.add(jMenuItemHospede);
 
-        jMenuItem6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/Boss.png"))); // NOI18N
-        jMenuItem6.setText("Funcionário");
-        jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
+        jMenuItemFuncionario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/Boss.png"))); // NOI18N
+        jMenuItemFuncionario.setText("Funcionário");
+        jMenuItemFuncionario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem6ActionPerformed(evt);
+                jMenuItemFuncionarioActionPerformed(evt);
             }
         });
-        jMenu2.add(jMenuItem6);
+        jMenu2.add(jMenuItemFuncionario);
 
-        jMenuItem1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/Phone.png"))); // NOI18N
-        jMenuItem1.setText("Serviços");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        jMenuItemServicos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/Phone.png"))); // NOI18N
+        jMenuItemServicos.setText("Serviços");
+        jMenuItemServicos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                jMenuItemServicosActionPerformed(evt);
             }
         });
-        jMenu2.add(jMenuItem1);
+        jMenu2.add(jMenuItemServicos);
+        jMenu2.add(jSeparator4);
+
+        jMenuVagaEstacionamento.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/Blue tag.png"))); // NOI18N
+        jMenuVagaEstacionamento.setText("Vaga Estacionamento");
+        jMenuVagaEstacionamento.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuVagaEstacionamentoActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuVagaEstacionamento);
+
+        jMenuMarcaVeiculo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/Car key.png"))); // NOI18N
+        jMenuMarcaVeiculo.setText("Marca Veiculo");
+        jMenuMarcaVeiculo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuMarcaVeiculoActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuMarcaVeiculo);
         jMenu2.add(jSeparator2);
 
         jMenuItemSair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/Exit.png"))); // NOI18N
@@ -144,12 +173,12 @@ public class TelaMenuPrincipal extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_jMenuItemSairActionPerformed
 
-    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+    private void jMenuItemHospedeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemHospedeActionPerformed
         HospedeRepository repository = new HospedeRepository();
         CrudController<Hospede> controller = new CrudController<>(repository, Hospede.class);
         JFrame crudScreen = CrudScreenGenerator.generateCrudScreen(controller);
         crudScreen.setVisible(true);
-    }//GEN-LAST:event_jMenuItem5ActionPerformed
+    }//GEN-LAST:event_jMenuItemHospedeActionPerformed
 
     private void jMenuItemProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemProdutoActionPerformed
         ProdutoCopaRepository repository = new ProdutoCopaRepository();
@@ -158,23 +187,40 @@ public class TelaMenuPrincipal extends javax.swing.JFrame {
         crudScreen.setVisible(true);
     }//GEN-LAST:event_jMenuItemProdutoActionPerformed
 
-    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-        JOptionPane.showMessageDialog(null, "Não há :C");
-    }//GEN-LAST:event_jMenuItem4ActionPerformed
+    private void jMenuItemFornecedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemFornecedorActionPerformed
+        FornecedorRepository repository = new FornecedorRepository();
+        CrudController<Fornecedor> controller = new CrudController<>(repository, Fornecedor.class);
+        JFrame crudScreen = CrudScreenGenerator.generateCrudScreen(controller);
+        crudScreen.setVisible(true);
+    }//GEN-LAST:event_jMenuItemFornecedorActionPerformed
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+    private void jMenuItemServicosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemServicosActionPerformed
         ServicoRepository repository = new ServicoRepository();
         CrudController<Servico> controller = new CrudController<>(repository, Servico.class);
         JFrame crudScreen = CrudScreenGenerator.generateCrudScreen(controller);
         crudScreen.setVisible(true);
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    }//GEN-LAST:event_jMenuItemServicosActionPerformed
 
-    private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
+    private void jMenuItemFuncionarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemFuncionarioActionPerformed
         FuncionarioRepository repository = new FuncionarioRepository();
         CrudController<Funcionario> controller = new CrudController<>(repository, Funcionario.class);
         JFrame crudScreen = CrudScreenGenerator.generateCrudScreen(controller);
         crudScreen.setVisible(true);
-    }//GEN-LAST:event_jMenuItem6ActionPerformed
+    }//GEN-LAST:event_jMenuItemFuncionarioActionPerformed
+
+    private void jMenuMarcaVeiculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuMarcaVeiculoActionPerformed
+        MarcaRepository repository = new MarcaRepository();
+        CrudController<Marca> controller = new CrudController<>(repository, Marca.class);
+        JFrame crudScreen = CrudScreenGenerator.generateCrudScreen(controller);
+        crudScreen.setVisible(true);
+    }//GEN-LAST:event_jMenuMarcaVeiculoActionPerformed
+
+    private void jMenuVagaEstacionamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuVagaEstacionamentoActionPerformed
+        VagaRepository repository = new VagaRepository();
+        CrudController<VagaEstacionamento> controller = new CrudController<>(repository, VagaEstacionamento.class);
+        JFrame crudScreen = CrudScreenGenerator.generateCrudScreen(controller);
+        crudScreen.setVisible(true);
+    }//GEN-LAST:event_jMenuVagaEstacionamentoActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -214,14 +260,18 @@ public class TelaMenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem4;
-    private javax.swing.JMenuItem jMenuItem5;
-    private javax.swing.JMenuItem jMenuItem6;
+    private javax.swing.JMenuItem jMenuItemFornecedor;
+    private javax.swing.JMenuItem jMenuItemFuncionario;
+    private javax.swing.JMenuItem jMenuItemHospede;
     private javax.swing.JMenuItem jMenuItemProduto;
     private javax.swing.JMenuItem jMenuItemSair;
+    private javax.swing.JMenuItem jMenuItemServicos;
+    private javax.swing.JMenuItem jMenuMarcaVeiculo;
+    private javax.swing.JMenuItem jMenuVagaEstacionamento;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
+    private javax.swing.JSeparator jSeparator3;
+    private javax.swing.JPopupMenu.Separator jSeparator4;
     // End of variables declaration//GEN-END:variables
 }
