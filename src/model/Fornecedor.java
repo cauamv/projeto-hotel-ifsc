@@ -1,9 +1,20 @@
 package model;
+
+import generator.CrudEntity;
+import generator.CrudField;
+
+@CrudEntity(tableName = "fornecedores", displayName = "Fornecedores")
 public class Fornecedor extends Pessoa{
-    
+    @CrudField(label = "Razão Social", order = 16, maxLength = 200, showInTable = true, tableOrder = 7)
     private String razaoSocial;
+    
+    @CrudField(label = "CNPJ", order = 17, maxLength = 18, showInTable = true, tableOrder = 8, mask = true, typeMask = "CNPJ")
     private String cnpj;
+
+    @CrudField(label = "Inscrição Estadual", order = 18, maxLength = 20)
     private String inscricaoEstadual;
+
+    @CrudField(label = "Contato", order = 19, maxLength = 100)
     private String contato;
 
     public Fornecedor() {
