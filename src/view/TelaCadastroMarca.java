@@ -2,9 +2,7 @@ package view;
 import generator.CrudController;
 import generator.CrudScreenGenerator;
 import javax.swing.*;
-import model.Hospede;
 import model.Marca;
-import repository.HospedeRepository;
 import repository.MarcaRepository;
 
 public class TelaCadastroMarca {

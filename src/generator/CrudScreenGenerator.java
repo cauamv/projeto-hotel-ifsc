@@ -183,23 +183,18 @@ public class CrudScreenGenerator {
                 case "CPF":
                     maskPattern = "###.###.###-##";
                     break;
-
                 case "CNPJ":
                     maskPattern = "##.###.###/####-##";
                     break;
-
                 case "TELEFONE":
                     maskPattern = "(##) #####-####";
                     break;
-
                 case "CEP":
                     maskPattern = "#####-###";
                     break;
-
                 case "RG":
                     maskPattern = "##.###.###-#";
                     break;
-
                 case "DATE":
                     maskPattern = "##/##/####";
                     break;
@@ -222,6 +217,27 @@ public class CrudScreenGenerator {
         switch (type.toUpperCase()) {
             case "PASSWORD":
                 return new JPasswordField(20);
+            case "COMBOBOX":
+                try {
+                    Class<?> itemsClass = annotation.itemsClass();
+                    if (itemsClass != Object.class) {
+                        // Magia com Reflection para achar e criar o repositório correto
+                        String repositoryClassName = "repository." + itemsClass.getSimpleName() + "Repository";
+                        Class<?> repositoryClass = Class.forName(repositoryClassName);
+                        CrudRepository<?> itemRepository = (CrudRepository<?>) repositoryClass.getDeclaredConstructor().newInstance();
+                        
+                        // Pega todos os itens do repositório
+                        List<?> items = itemRepository.findAll();
+                        
+                        // Cria o ComboBox com os itens
+                        JComboBox<Object> comboBox = new JComboBox<>(items.toArray());
+                        return comboBox;
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    // Se der erro, cria um ComboBox vazio para não quebrar a tela
+                    return new JComboBox<>();
+                }
             case "NUMBER":
                 if (fieldType == int.class || fieldType == Integer.class) {
                     return new JSpinner(new SpinnerNumberModel(0, Integer.MIN_VALUE, Integer.MAX_VALUE, 1));
@@ -389,14 +405,19 @@ public class CrudScreenGenerator {
         return null;
     }
 
-    // Dentro da classe CrudScreenGenerator.java
+    // <<<<<<<<<<<<<<<<<<<<<<<<<<<< CÓDIGO CORRIGIDO AQUI <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     private static Object getValueFromComponent(JComponent component, Class<?> targetType) {
+        // Adicionado para ler o valor do ComboBox
+        if (component instanceof JComboBox) {
+            return ((JComboBox<?>) component).getSelectedItem();
+        }
+
         if (component instanceof JTextField) {
             String text = ((JTextField) component).getText().trim();
             if (text.isEmpty()) {
                 if (targetType == char.class) {
                     return 'A'; // Valor padrão para char se vazio
-                }            // Para outros tipos, retorna null se o campo estiver vazio
+                }               // Para outros tipos, retorna null se o campo estiver vazio
                 return null;
             }
 
@@ -413,7 +434,6 @@ public class CrudScreenGenerator {
                 } catch (NumberFormatException e) {
                     return 0.0; // Retorna 0.0 se o texto não for um número válido
                 }
-                // <<<<<<<<<<<<<<<<<<<<<<<<<<<< ADICIONE ESTE BLOCO <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
             } else if (targetType == float.class || targetType == Float.class) {
                 try {
                     // Substitui vírgula por ponto para o padrão brasileiro
@@ -421,7 +441,6 @@ public class CrudScreenGenerator {
                 } catch (NumberFormatException e) {
                     return 0.0f; // Retorna 0.0f se o texto não for um número válido
                 }
-                // <<<<<<<<<<<<<<<<<<<<<<<<<<<< FIM DO BLOCO NOVO <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
             } else if (targetType == char.class) {
                 return text.length() > 0 ? text.charAt(0) : 'A';
             }
@@ -438,6 +457,7 @@ public class CrudScreenGenerator {
 
         return null;
     }
+    // <<<<<<<<<<<<<<<<<<<<<<<<<<<< FIM DA CORREÇÃO <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
     private static void clearForm(Map<String, JComponent> fieldComponents) {
         for (JComponent component : fieldComponents.values()) {

@@ -1,11 +1,18 @@
 package model;
 
+import generator.CrudEntity;
+import generator.CrudField;
+
+@CrudEntity(tableName = "quartos", displayName = "Quartos")
 public class Modelo {
 
+    @CrudField(label = "ID", editable = false, order = 1, type = "NUMBER", showInTable = true, tableOrder = 1)
     private int id;
+    @CrudField(label = "Descrição", required = true, order = 2, maxLength = 100, showInTable = true, tableOrder = 2)
     private String descricao;
+    @CrudField(label = "Status", required = true, order = 3, type = "CHAR", maxLength = 1, showInTable = true, tableOrder = 3)
     private char status;
-
+    @CrudField(label = "Marca", order = 4, type = "COMBOBOX", itemsClass = Marca.class, tableOrder = 4)
     private Marca marca;
 
     public Modelo() {

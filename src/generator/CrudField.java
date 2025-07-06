@@ -19,4 +19,5 @@ public @interface CrudField {
     int tableOrder() default 0;            // Ordem específica para tabela
     boolean mask() default false;
     String typeMask() default "TELEFONE";  // CPF, CNPJ, TELEFONE, CEP, RG, DATE 
+    Class<?> itemsClass() default Object.class; // Para o ComboBox, define a classe dos itens
 }

@@ -51,9 +51,8 @@ public class Marca {
 
     @Override
     public String toString() {
-        return    "id    = " + this.getId()
-                + "Desc. = " + this.getDescricao()
-                + "Status= " + this.getStatus();
+        return this.getDescricao();
+                
     }
 
 }
