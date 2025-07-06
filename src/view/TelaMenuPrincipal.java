@@ -9,9 +9,11 @@ import generator.CrudController;
 import generator.CrudScreenGenerator;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import model.Funcionario;
 import model.Hospede;
 import model.ProdutoCopa;
 import model.Servico;
+import repository.FuncionarioRepository;
 import repository.HospedeRepository;
 import repository.ProdutoCopaRepository;
 import repository.ServicoRepository;
@@ -80,6 +82,11 @@ public class TelaMenuPrincipal extends javax.swing.JFrame {
 
         jMenuItem6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/Boss.png"))); // NOI18N
         jMenuItem6.setText("Funcionário");
+        jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem6ActionPerformed(evt);
+            }
+        });
         jMenu2.add(jMenuItem6);
 
         jMenuItem1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/Phone.png"))); // NOI18N
@@ -161,6 +168,13 @@ public class TelaMenuPrincipal extends javax.swing.JFrame {
         JFrame crudScreen = CrudScreenGenerator.generateCrudScreen(controller);
         crudScreen.setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
+        FuncionarioRepository repository = new FuncionarioRepository();
+        CrudController<Funcionario> controller = new CrudController<>(repository, Funcionario.class);
+        JFrame crudScreen = CrudScreenGenerator.generateCrudScreen(controller);
+        crudScreen.setVisible(true);
+    }//GEN-LAST:event_jMenuItem6ActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
