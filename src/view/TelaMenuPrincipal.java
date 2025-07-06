@@ -8,8 +8,11 @@ package view;
 import generator.CrudController;
 import generator.CrudScreenGenerator;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import model.Hospede;
+import model.ProdutoCopa;
 import repository.HospedeRepository;
+import repository.ProdutoCopaRepository;
 
 
 public class TelaMenuPrincipal extends javax.swing.JFrame {
@@ -31,6 +34,7 @@ public class TelaMenuPrincipal extends javax.swing.JFrame {
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenuItem5 = new javax.swing.JMenuItem();
         jMenuItem6 = new javax.swing.JMenuItem();
+        jMenuItem1 = new javax.swing.JMenuItem();
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
         jMenuItemSair = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
@@ -44,15 +48,26 @@ public class TelaMenuPrincipal extends javax.swing.JFrame {
 
         jMenu2.setText("Cadastros");
 
-        jMenuItemProduto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/Bomb.png"))); // NOI18N
-        jMenuItemProduto.setText("Produto");
+        jMenuItemProduto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/Buy.png"))); // NOI18N
+        jMenuItemProduto.setText("Produto Copa");
+        jMenuItemProduto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemProdutoActionPerformed(evt);
+            }
+        });
         jMenu2.add(jMenuItemProduto);
         jMenu2.add(jSeparator1);
 
-        jMenuItem4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/Boss.png"))); // NOI18N
+        jMenuItem4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/Delivery.png"))); // NOI18N
         jMenuItem4.setText("Fornecedor");
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem4ActionPerformed(evt);
+            }
+        });
         jMenu2.add(jMenuItem4);
 
+        jMenuItem5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/People.png"))); // NOI18N
         jMenuItem5.setText("Hóspede");
         jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -61,8 +76,18 @@ public class TelaMenuPrincipal extends javax.swing.JFrame {
         });
         jMenu2.add(jMenuItem5);
 
+        jMenuItem6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/Boss.png"))); // NOI18N
         jMenuItem6.setText("Funcionário");
         jMenu2.add(jMenuItem6);
+
+        jMenuItem1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/Phone.png"))); // NOI18N
+        jMenuItem1.setText("Serviços");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem1);
         jMenu2.add(jSeparator2);
 
         jMenuItemSair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/Exit.png"))); // NOI18N
@@ -115,19 +140,22 @@ public class TelaMenuPrincipal extends javax.swing.JFrame {
         CrudController<Hospede> controller = new CrudController<>(repository, Hospede.class);
         JFrame crudScreen = CrudScreenGenerator.generateCrudScreen(controller);
         crudScreen.setVisible(true);
-
-        
-        /*
-        TelaCadastroHospede painelHospede = new TelaCadastroHospede();
-        ControllerCadHospede controllerCadHospede = new ControllerCadHospede(painelHospede);
-        javax.swing.JFrame janelaParaCadastro = new javax.swing.JFrame("Cadastro de Hóspede");
-        janelaParaCadastro.setDefaultCloseOperation(javax.swing.JFrame.DISPOSE_ON_CLOSE);
-        janelaParaCadastro.add(painelHospede);      
-        janelaParaCadastro.pack();       
-        janelaParaCadastro.setLocationRelativeTo(null);       
-        janelaParaCadastro.setVisible(true);
-        */
     }//GEN-LAST:event_jMenuItem5ActionPerformed
+
+    private void jMenuItemProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemProdutoActionPerformed
+        ProdutoCopaRepository repository = new ProdutoCopaRepository();
+        CrudController<ProdutoCopa> controller = new CrudController<>(repository, ProdutoCopa.class);
+        JFrame crudScreen = CrudScreenGenerator.generateCrudScreen(controller);
+        crudScreen.setVisible(true);
+    }//GEN-LAST:event_jMenuItemProdutoActionPerformed
+
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+        JOptionPane.showMessageDialog(null, "Não há :C");
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        JOptionPane.showMessageDialog(null, "Não há :C");
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -167,6 +195,7 @@ public class TelaMenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
