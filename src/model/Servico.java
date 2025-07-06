@@ -12,7 +12,7 @@ public class Servico {
     private String descricao;
     @CrudField(label = "Valor", required = true, order = 3,type="NUMBER", maxLength = 6, showInTable = true, tableOrder = 3)
     private float valor;
-    @CrudField(label = "Status", order = 4, type = "CHAR", showInTable = true, tableOrder = 4)
+    @CrudField(label = "Status",maxLength = 1, order = 4, type = "CHAR", showInTable = true, tableOrder = 4)
     private char status;
 
     public int getId() {

@@ -8,6 +8,7 @@ package view;
 import generator.CrudController;
 import generator.CrudScreenGenerator;
 import javax.swing.JFrame;
+import javax.swing.UIManager;
 import model.Fornecedor;
 import model.Funcionario;
 import model.Hospede;
@@ -23,9 +24,7 @@ import repository.ProdutoCopaRepository;
 import repository.ServicoRepository;
 import repository.VagaRepository;
 
-
 public class TelaMenuPrincipal extends javax.swing.JFrame {
-
 
     public TelaMenuPrincipal() {
         initComponents();
@@ -222,6 +221,11 @@ public class TelaMenuPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuVagaEstacionamentoActionPerformed
 
     public static void main(String args[]) {
+        // Traduz os botões padrão do JOptionPane para português
+        UIManager.put("OptionPane.yesButtonText", "Sim");
+        UIManager.put("OptionPane.noButtonText", "Não");
+        UIManager.put("OptionPane.cancelButtonText", "Cancelar"); // <-- Já traduzi o "Cancelar" de bônus!
+        UIManager.put("OptionPane.okButtonText", "OK");       // <-- E o "OK" também.
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
