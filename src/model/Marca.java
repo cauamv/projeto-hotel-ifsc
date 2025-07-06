@@ -5,10 +5,13 @@ import generator.CrudField;
 
 @CrudEntity(tableName = "marcas", displayName = "Marcas")
 public class Marca {
+
     @CrudField(label = "ID", editable = false, order = 1, type = "NUMBER", showInTable = true, tableOrder = 1)
     private int id;
+
     @CrudField(label = "Nome", required = true, order = 2, maxLength = 100, showInTable = true, tableOrder = 2)
     private String descricao;
+
     @CrudField(label = "Status", order = 3, type = "STATUS_CHAR", showInTable = true, tableOrder = 3)
     private char status;
 
@@ -42,9 +45,10 @@ public class Marca {
     }
 
     public void setStatus(char status) {
-        if ( (status == 'A') || (status == 'C') || (status == 'a') || (status == 'c') ) {
-            this.status = status;
-        }else {
+        char upperStatus = Character.toUpperCase(status);
+        if (upperStatus == 'A' || upperStatus == 'I') {
+            this.status = upperStatus;
+        } else {
             this.status = 'A';
         }
     }
@@ -52,7 +56,5 @@ public class Marca {
     @Override
     public String toString() {
         return this.getDescricao();
-                
     }
-
 }

@@ -3,17 +3,30 @@ package model;
 import generator.CrudEntity;
 import generator.CrudField;
 
-@CrudEntity(tableName = "vaga estacionamento", displayName = "Vaga estacionamento")
+@CrudEntity(tableName = "vaga_estacionamento", displayName = "Vagas de Estacionamento")
 public class VagaEstacionamento {
 
     @CrudField(label = "ID", editable = false, order = 1, type = "NUMBER", showInTable = true, tableOrder = 1)
     private int id;
-    @CrudField(label = "Descrição", required = true, order = 2, maxLength = 100, showInTable = true, tableOrder = 2)
+
+    @CrudField(label = "Identificação da Vaga", required = true, order = 2, maxLength = 100, showInTable = true, tableOrder = 2)
     private String descricao;
-    @CrudField(label = "Metragem vaga", required = true, order = 3, typeMask = "METRAGEM", mask = true, maxLength = 7, showInTable = true, tableOrder = 3)
+
+    @CrudField(label = "Metragem", required = true, order = 3, typeMask = "METRAGEM", mask = true, maxLength = 7, showInTable = true, tableOrder = 3)
     private float metragemvaga;
+
     @CrudField(label = "Status", order = 4, type = "STATUS_CHAR", showInTable = true, tableOrder = 4)
     private char status;
+
+    public VagaEstacionamento() {
+    }
+
+    public VagaEstacionamento(int id, String descricao, float metragemvaga, char status) {
+        this.id = id;
+        this.descricao = descricao;
+        this.metragemvaga = metragemvaga;
+        this.status = status;
+    }
 
     public int getId() {
         return id;
@@ -44,6 +57,16 @@ public class VagaEstacionamento {
     }
 
     public void setStatus(char status) {
-        this.status = status;
+        char upperStatus = Character.toUpperCase(status);
+        if (upperStatus == 'A' || upperStatus == 'I') {
+            this.status = upperStatus;
+        } else {
+            this.status = 'A';
+        }
+    }
+
+    @Override
+    public String toString() {
+        return this.getDescricao();
     }
 }

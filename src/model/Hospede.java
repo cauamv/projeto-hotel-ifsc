@@ -6,10 +6,10 @@ import generator.CrudField;
 @CrudEntity(tableName = "hospedes", displayName = "Hóspedes")
 public class Hospede extends Pessoa {
 
-    @CrudField(label = "Razão Social", order = 16, maxLength = 200, showInTable = true, tableOrder = 7)
+    @CrudField(label = "Razão Social", required = true, order = 16, maxLength = 200, showInTable = true, tableOrder = 7)
     private String razaoSocial;
 
-    @CrudField(label = "CNPJ", order = 17, maxLength = 18, showInTable = true, tableOrder = 8, mask = true, typeMask = "CNPJ")
+    @CrudField(label = "CNPJ", required = true, order = 17, maxLength = 18, showInTable = true, tableOrder = 8, mask = true, typeMask = "CNPJ")
     private String cnpj;
 
     @CrudField(label = "Inscrição Estadual", order = 18, maxLength = 20)
@@ -64,14 +64,13 @@ public class Hospede extends Pessoa {
     @Override
     public String toString() {
         return super.toString()
-                + "\ncnpj   = " + this.getCnpj()
-                + "\nCep    = " + this.getCnpj()
-                + "\nCidade = " + this.getCidade()
-                + "\nBairro = " + this.getBairro()
+                + "\ncnpj     = " + this.getCnpj()
+                + "\nCep      = " + this.getCep() 
+                + "\nCidade   = " + this.getCidade()
+                + "\nBairro   = " + this.getBairro()
                 + "\nLogradouro = " + this.getLogradouro()
                 + "\nComplemento= " + this.getComplemento()
                 + "\nContato    = " + this.getContato()
-                + "\nStatus = " + this.getStatus();
+                + "\nStatus   = " + this.getStatus();
     }
-
 }
