@@ -14,6 +14,7 @@ import model.Funcionario;
 import model.Hospede;
 import model.Marca;
 import model.Modelo;
+import model.Veiculo;
 import model.ProdutoCopa;
 import model.Servico;
 import model.VagaEstacionamento;
@@ -22,6 +23,7 @@ import repository.FuncionarioRepository;
 import repository.HospedeRepository;
 import repository.MarcaRepository;
 import repository.ModeloRepository;
+import repository.VeiculoRepository;
 import repository.ProdutoCopaRepository;
 import repository.ServicoRepository;
 import repository.VagaRepository;
@@ -50,6 +52,7 @@ public class TelaMenuPrincipal extends javax.swing.JFrame {
         jMenuVagaEstacionamento = new javax.swing.JMenuItem();
         jMenuMarcaVeiculo = new javax.swing.JMenuItem();
         jMenuItemModeloVeiculo = new javax.swing.JMenuItem();
+        jMenuItemVeiculo = new javax.swing.JMenuItem();
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
         jMenuItemSair = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
@@ -136,6 +139,15 @@ public class TelaMenuPrincipal extends javax.swing.JFrame {
             }
         });
         jMenu2.add(jMenuItemModeloVeiculo);
+
+        jMenuItemVeiculo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/Car key.png"))); // NOI18N
+        jMenuItemVeiculo.setText("Cadastro de Veiculo");
+        jMenuItemVeiculo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemVeiculoActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItemVeiculo);
         jMenu2.add(jSeparator2);
 
         jMenuItemSair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/Exit.png"))); // NOI18N
@@ -239,6 +251,13 @@ public class TelaMenuPrincipal extends javax.swing.JFrame {
         crudScreen.setVisible(true);
     }//GEN-LAST:event_jMenuItemModeloVeiculoActionPerformed
 
+    private void jMenuItemVeiculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemVeiculoActionPerformed
+        VeiculoRepository repository = new VeiculoRepository();
+        CrudController<Veiculo> controller = new CrudController<>(repository, Veiculo.class);
+        JFrame crudScreen = CrudScreenGenerator.generateCrudScreen(controller);
+        crudScreen.setVisible(true);
+    }//GEN-LAST:event_jMenuItemVeiculoActionPerformed
+
     public static void main(String args[]) {
         // Traduz os botões padrão do JOptionPane para português
         UIManager.put("OptionPane.yesButtonText", "Sim");
@@ -290,6 +309,7 @@ public class TelaMenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItemProduto;
     private javax.swing.JMenuItem jMenuItemSair;
     private javax.swing.JMenuItem jMenuItemServicos;
+    private javax.swing.JMenuItem jMenuItemVeiculo;
     private javax.swing.JMenuItem jMenuMarcaVeiculo;
     private javax.swing.JMenuItem jMenuVagaEstacionamento;
     private javax.swing.JPopupMenu.Separator jSeparator1;
