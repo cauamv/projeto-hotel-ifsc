@@ -47,6 +47,14 @@ O **Hotel IFSC** provê uma interface desktop para cadastro e listagem de entida
 
 ---
 
+## 📐 Diagrama de Classes
+
+Abaixo está o diagrama de classes atual do sistema Hotel IFSC:
+
+![Diagrama de Classes](https://i.postimg.cc/26q12Hvs/Diagram-de-Classes-Hotel.jpg)
+
+---
+
 ## 📌 Observações
 
 - Dados são mantidos apenas em memória enquanto a aplicação estiver em execução.
