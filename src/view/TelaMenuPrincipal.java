@@ -12,6 +12,7 @@ import model.Fornecedor;
 import model.Funcionario;
 import model.Hospede;
 import model.Marca;
+import model.Modelo;
 import model.ProdutoCopa;
 import model.Servico;
 import model.VagaEstacionamento;
@@ -19,6 +20,7 @@ import repository.FornecedorRepository;
 import repository.FuncionarioRepository;
 import repository.HospedeRepository;
 import repository.MarcaRepository;
+import repository.ModeloRepository;
 import repository.ProdutoCopaRepository;
 import repository.ServicoRepository;
 import repository.VagaRepository;
@@ -48,6 +50,7 @@ public class TelaMenuPrincipal extends javax.swing.JFrame {
         jSeparator4 = new javax.swing.JPopupMenu.Separator();
         jMenuVagaEstacionamento = new javax.swing.JMenuItem();
         jMenuMarcaVeiculo = new javax.swing.JMenuItem();
+        jMenuItemModeloVeiculo = new javax.swing.JMenuItem();
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
         jMenuItemSair = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
@@ -118,13 +121,22 @@ public class TelaMenuPrincipal extends javax.swing.JFrame {
         jMenu2.add(jMenuVagaEstacionamento);
 
         jMenuMarcaVeiculo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/Car key.png"))); // NOI18N
-        jMenuMarcaVeiculo.setText("Marca Veiculo");
+        jMenuMarcaVeiculo.setText("Marca do Veiculo");
         jMenuMarcaVeiculo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuMarcaVeiculoActionPerformed(evt);
             }
         });
         jMenu2.add(jMenuMarcaVeiculo);
+
+        jMenuItemModeloVeiculo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/Car key.png"))); // NOI18N
+        jMenuItemModeloVeiculo.setText("Modelo do Veiculo");
+        jMenuItemModeloVeiculo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemModeloVeiculoActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItemModeloVeiculo);
         jMenu2.add(jSeparator2);
 
         jMenuItemSair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/Exit.png"))); // NOI18N
@@ -221,6 +233,13 @@ public class TelaMenuPrincipal extends javax.swing.JFrame {
         crudScreen.setVisible(true);
     }//GEN-LAST:event_jMenuVagaEstacionamentoActionPerformed
 
+    private void jMenuItemModeloVeiculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemModeloVeiculoActionPerformed
+        ModeloRepository repository = new ModeloRepository();
+        CrudController<Modelo> controller = new CrudController<>(repository, Modelo.class);
+        JFrame crudScreen = CrudScreenGenerator.generateCrudScreen(controller);
+        crudScreen.setVisible(true);
+    }//GEN-LAST:event_jMenuItemModeloVeiculoActionPerformed
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -263,6 +282,7 @@ public class TelaMenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItemFornecedor;
     private javax.swing.JMenuItem jMenuItemFuncionario;
     private javax.swing.JMenuItem jMenuItemHospede;
+    private javax.swing.JMenuItem jMenuItemModeloVeiculo;
     private javax.swing.JMenuItem jMenuItemProduto;
     private javax.swing.JMenuItem jMenuItemSair;
     private javax.swing.JMenuItem jMenuItemServicos;
