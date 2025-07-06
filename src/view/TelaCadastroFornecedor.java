@@ -14,11 +14,9 @@ public class TelaCadastroFornecedor {
                 e.printStackTrace();
             }
             
-            // Criar repositório e controlador
             FornecedorRepository repository = new FornecedorRepository();
             CrudController<Fornecedor> controller = new CrudController<>(repository, Fornecedor.class);
             
-            // Gerar e exibir a tela CRUD
             JFrame crudScreen = CrudScreenGenerator.generateCrudScreen(controller);
             crudScreen.setVisible(true);
         });

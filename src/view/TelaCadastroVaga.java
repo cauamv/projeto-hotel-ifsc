@@ -15,11 +15,9 @@ public class TelaCadastroVaga {
                 e.printStackTrace();
             }
             
-            // Criar repositório e controlador
             VagaRepository repository = new VagaRepository();
             CrudController<VagaEstacionamento> controller = new CrudController<>(repository, VagaEstacionamento.class);
             
-            // Gerar e exibir a tela CRUD
             JFrame crudScreen = CrudScreenGenerator.generateCrudScreen(controller);
             crudScreen.setVisible(true);
         });

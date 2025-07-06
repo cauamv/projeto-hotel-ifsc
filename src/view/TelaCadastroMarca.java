@@ -14,11 +14,9 @@ public class TelaCadastroMarca {
                 e.printStackTrace();
             }
             
-            // Criar repositório e controlador
             MarcaRepository repository = new MarcaRepository();
             CrudController<Marca> controller = new CrudController<>(repository, Marca.class);
             
-            // Gerar e exibir a tela CRUD
             JFrame crudScreen = CrudScreenGenerator.generateCrudScreen(controller);
             crudScreen.setVisible(true);
         });
