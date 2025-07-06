@@ -55,4 +55,6 @@ O **Hotel IFSC** provê uma interface desktop para cadastro e listagem de entida
 ---
 
 ## ✍️ Créditos
-Projeto sendo desenvolvido por [**Cauã de Moraes Vieira**](https://www.linkedin.com/in/cauamv/) e [**Arthur Souza Mendes**](https://www.linkedin.com/in/arthur-souza-mendes-078653252/).
+Projeto sendo desenvolvido por [**Cauã de Moraes Vieira**](https://www.linkedin.com/in/cauamv/) e [**Arthur Souza Mendes**](https://www.linkedin.com/in/arthur-souza-mendes-078653252/).  
+<sub>Com apoio de nossa colega de classe [**Soraya Yasin Farag**](https://www.linkedin.com/in/soraya-y-2a835122b/)</sub>
+
