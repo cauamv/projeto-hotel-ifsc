@@ -248,10 +248,17 @@ public class CrudScreenGenerator {
                 statusComboBox.addItem(new StatusOption("Inativo", 'I'));
                 return statusComboBox;
             case "NUMBER":
-                if (field.getType() == int.class || field.getType() == Integer.class) {
-                    return new JSpinner(new SpinnerNumberModel(0, Integer.MIN_VALUE, Integer.MAX_VALUE, 1));
-                } else if (field.getType() == double.class || field.getType() == Double.class) {
-                    return new JSpinner(new SpinnerNumberModel(0.0, -Double.MAX_VALUE, Double.MAX_VALUE, 0.1));
+                Class<?> fieldType = field.getType();
+                if (fieldType == int.class || fieldType == Integer.class) {
+                    // Pega o valor mínimo da anotação. O padrão na anotação é 0.
+                    int minValue = (annotation != null) ? annotation.minValue() : 0;
+
+                    // Usa o minValue para configurar o JSpinner, com o valor inicial e o mínimo sendo o mesmo.
+                    return new JSpinner(new SpinnerNumberModel(minValue, minValue, Integer.MAX_VALUE, 1));
+
+                } else if (fieldType == double.class || fieldType == Double.class) {
+                    // Mantendo o mínimo 0 para double, mas pode ser aprimorado da mesma forma.
+                    return new JSpinner(new SpinnerNumberModel(0.0, 0.0, Double.MAX_VALUE, 0.1));
                 }
                 return new JTextField(20);
             case "BOOLEAN":
@@ -354,89 +361,89 @@ public class CrudScreenGenerator {
     }
 
     private static <T> void saveRecord(JTable table, Map<String, JComponent> fieldComponents, CrudController<T> controller) {
-    List<Field> allFields = getAllFieldsFromClassHierarchy(controller.getEntityClass());
+        List<Field> allFields = getAllFieldsFromClassHierarchy(controller.getEntityClass());
 
-    // Bloco de validação continua o mesmo...
-    for (Field field : allFields) {
-        CrudField annotation = field.getAnnotation(CrudField.class);
-        if (annotation != null && annotation.required() && fieldComponents.containsKey(field.getName())) {
-            JComponent component = fieldComponents.get(field.getName());
-            boolean isEmpty = false;
-            if (component instanceof JFormattedTextField) {
-                Object value = ((JFormattedTextField) component).getValue();
-                if (value instanceof Number) {
-                    isEmpty = ((Number) value).doubleValue() == 0;
-                } else {
-                    isEmpty = value == null || value.toString().replace("_", "").trim().isEmpty();
-                }
-            } else if (component instanceof JTextField) {
-                isEmpty = ((JTextField) component).getText().trim().isEmpty();
-            } else if (component instanceof JPasswordField) {
-                isEmpty = ((JPasswordField) component).getPassword().length == 0;
-            } else if (component instanceof JComboBox) {
-                isEmpty = ((JComboBox<?>) component).getSelectedItem() == null;
-            }
-
-            if (isEmpty) {
-                String fieldLabel = annotation.label().isEmpty() ? formatFieldName(field.getName()) : annotation.label();
-                JOptionPane.showMessageDialog(null, "O campo '" + fieldLabel + "' é obrigatório e não foi preenchido.", "Campo Obrigatório", JOptionPane.ERROR_MESSAGE);
-                component.requestFocusInWindow();
-                return;
-            }
-        }
-    }
-
-    try {
-        T instance = controller.getEntityClass().getDeclaredConstructor().newInstance();
+        // Bloco de validação continua o mesmo...
         for (Field field : allFields) {
-            if (fieldComponents.containsKey(field.getName())) {
-                field.setAccessible(true);
+            CrudField annotation = field.getAnnotation(CrudField.class);
+            if (annotation != null && annotation.required() && fieldComponents.containsKey(field.getName())) {
                 JComponent component = fieldComponents.get(field.getName());
-                Object value = getValueFromComponent(component, field.getType());
-                if (value != null) {
-                    field.set(instance, value);
+                boolean isEmpty = false;
+                if (component instanceof JFormattedTextField) {
+                    Object value = ((JFormattedTextField) component).getValue();
+                    if (value instanceof Number) {
+                        isEmpty = ((Number) value).doubleValue() == 0;
+                    } else {
+                        isEmpty = value == null || value.toString().replace("_", "").trim().isEmpty();
+                    }
+                } else if (component instanceof JTextField) {
+                    isEmpty = ((JTextField) component).getText().trim().isEmpty();
+                } else if (component instanceof JPasswordField) {
+                    isEmpty = ((JPasswordField) component).getPassword().length == 0;
+                } else if (component instanceof JComboBox) {
+                    isEmpty = ((JComboBox<?>) component).getSelectedItem() == null;
+                }
+
+                if (isEmpty) {
+                    String fieldLabel = annotation.label().isEmpty() ? formatFieldName(field.getName()) : annotation.label();
+                    JOptionPane.showMessageDialog(null, "O campo '" + fieldLabel + "' é obrigatório e não foi preenchido.", "Campo Obrigatório", JOptionPane.ERROR_MESSAGE);
+                    component.requestFocusInWindow();
+                    return;
                 }
             }
         }
-        
-        // Lógica de data de cadastro continua a mesma...
+
         try {
-            Field dataCadastroField = findFieldInHierarchy(controller.getEntityClass(), "dataCadastro");
-            if (dataCadastroField != null) {
-                dataCadastroField.setAccessible(true);
-                Object currentValue = dataCadastroField.get(instance);
-                String currentDate = currentValue != null ? currentValue.toString() : "";
-                if (currentDate.isEmpty()) {
-                    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-                    dataCadastroField.set(instance, sdf.format(new Date()));
+            T instance = controller.getEntityClass().getDeclaredConstructor().newInstance();
+            for (Field field : allFields) {
+                if (fieldComponents.containsKey(field.getName())) {
+                    field.setAccessible(true);
+                    JComponent component = fieldComponents.get(field.getName());
+                    Object value = getValueFromComponent(component, field.getType());
+                    if (value != null) {
+                        field.set(instance, value);
+                    }
                 }
             }
+
+            // Lógica de data de cadastro continua a mesma...
+            try {
+                Field dataCadastroField = findFieldInHierarchy(controller.getEntityClass(), "dataCadastro");
+                if (dataCadastroField != null) {
+                    dataCadastroField.setAccessible(true);
+                    Object currentValue = dataCadastroField.get(instance);
+                    String currentDate = currentValue != null ? currentValue.toString() : "";
+                    if (currentDate.isEmpty()) {
+                        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                        dataCadastroField.set(instance, sdf.format(new Date()));
+                    }
+                }
+            } catch (Exception e) {
+                System.out.println("Aviso: Não foi possível definir data de cadastro: " + e.getMessage());
+            }
+
+            controller.create(instance);
+            clearForm(fieldComponents);
+            updateTable(table, controller);
+
+            // <<<<<<<<<<<<<<< LÓGICA PARA ATUALIZAR O ID DEPOIS DE SALVAR <<<<<<<<<<<<<<<
+            JComponent idComponent = fieldComponents.get("id");
+            if (idComponent instanceof JSpinner) {
+                int nextId = controller.findAll().size() + 1;
+                ((JSpinner) idComponent).setValue(nextId);
+            } else if (idComponent instanceof JTextField) {
+                int nextId = controller.findAll().size() + 1;
+                ((JTextField) idComponent).setText(String.valueOf(nextId));
+            }
+            // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+            JOptionPane.showMessageDialog(null, "Registro salvo com sucesso!");
+
         } catch (Exception e) {
-            System.out.println("Aviso: Não foi possível definir data de cadastro: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Erro ao salvar: " + e.getMessage());
+            e.printStackTrace();
         }
-
-        controller.create(instance);
-        clearForm(fieldComponents);
-        updateTable(table, controller);
-
-        // <<<<<<<<<<<<<<< LÓGICA PARA ATUALIZAR O ID DEPOIS DE SALVAR <<<<<<<<<<<<<<<
-        JComponent idComponent = fieldComponents.get("id");
-        if (idComponent instanceof JSpinner) {
-            int nextId = controller.findAll().size() + 1;
-            ((JSpinner) idComponent).setValue(nextId);
-        } else if (idComponent instanceof JTextField) {
-            int nextId = controller.findAll().size() + 1;
-            ((JTextField) idComponent).setText(String.valueOf(nextId));
-        }
-        // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
-        JOptionPane.showMessageDialog(null, "Registro salvo com sucesso!");
-
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(null, "Erro ao salvar: " + e.getMessage());
-        e.printStackTrace();
     }
-}
 
     private static Field findFieldInHierarchy(Class<?> clazz, String fieldName) {
         Class<?> currentClass = clazz;

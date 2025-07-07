@@ -12,7 +12,7 @@ public class Quarto {
     @CrudField(label = "Descrição", required = true, order = 2, maxLength = 100, showInTable = true, tableOrder = 3)
     private String descricao;
 
-    @CrudField(label = "Capacidade", required = true, type = "NUMBER", order = 3, maxLength = 2, showInTable = true, tableOrder = 4)
+    @CrudField(label = "Capacidade", minValue = 1, required = true, type = "NUMBER", order = 3, maxLength = 2, showInTable = true, tableOrder = 4)
     private int capacidadehospedes;
 
     @CrudField(label = "Metragem", required = true, order = 4, typeMask = "METRAGEM", mask = true, maxLength = 7, showInTable = true, tableOrder = 5)

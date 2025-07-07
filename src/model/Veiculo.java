@@ -17,6 +17,8 @@ public class Veiculo {
 
     @CrudField(label = "Status", required = true, order = 4, type = "STATUS_CHAR", showInTable = true, tableOrder = 4)
     private char status;
+    @CrudField(label = "Modelo", required = true, order = 5, type = "COMBOBOX", itemsClass = Modelo.class, showInTable = true, tableOrder = 5)
+    private Modelo modelo;
 
     public Veiculo() {
     }

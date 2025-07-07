@@ -21,4 +21,5 @@ public @interface CrudField {
     String typeMask() default "TELEFONE";  // CPF, CNPJ, TELEFONE, CEP, RG, DATE 
     Class<?> itemsClass() default Object.class; // Para o ComboBox, define a classe dos itens
     String[] items() default {}; // Para o ComboBox com itens fixos
+    int minValue() default 0;
 }
