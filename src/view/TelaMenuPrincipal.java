@@ -8,6 +8,9 @@ package view;
 import generator.CrudController;
 import generator.CrudScreenGenerator;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JSeparator;
 import javax.swing.UIManager;
 import model.Fornecedor;
 import model.Funcionario;
@@ -185,6 +188,11 @@ public class TelaMenuPrincipal extends javax.swing.JFrame {
         jMenu5.setText("Ajuda");
 
         jMenuItem2.setText("Sobre");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
         jMenu5.add(jMenuItem2);
 
         jMenuBar1.add(jMenu5);
@@ -278,6 +286,48 @@ public class TelaMenuPrincipal extends javax.swing.JFrame {
         JFrame crudScreen = CrudScreenGenerator.generateCrudScreen(controller);
         crudScreen.setVisible(true);
     }//GEN-LAST:event_jMenuItemQuartoActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+    String appName = "Sistema de Gestão de Hotel v1.0";
+    String devName = "Desenvolvido por: Arthur Souza Mendes e Cauã de moraes vieira";
+    String linkText = "Visualizar Projeto no GitHub";
+    String githubUrl = "https://github.com/cauamv/projeto-hotel-ifsc"; // URL já corrigida
+
+    JLabel appNameLabel = new JLabel(appName);
+    JLabel devNameLabel = new JLabel(devName);
+    appNameLabel.setFont(new java.awt.Font("Tahoma", java.awt.Font.BOLD, 14));
+
+    JLabel linkLabel = new JLabel("<html><a href=''>" + linkText + "</a></html>");
+    linkLabel.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+
+    linkLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+        @Override
+        public void mouseClicked(java.awt.event.MouseEvent e) {
+            try {
+                // Tenta abrir a URL no navegador padrão do sistema operacional
+                java.awt.Desktop.getDesktop().browse(new java.net.URI(githubUrl));
+            } catch (Exception ex) {
+                // Se der algum erro, imprime no console para debug
+                ex.printStackTrace();
+            }
+        }
+    });
+
+    Object[] message = {
+        appNameLabel,
+        devNameLabel,
+        new JSeparator(),
+        linkLabel
+    };
+
+    JOptionPane.showMessageDialog(
+        this,    // 'this' se refere à janela principal, para centralizar o diálogo nela
+        message, // Nosso painel com as informações
+        "Sobre o Sistema", // Título da janela
+        JOptionPane.INFORMATION_MESSAGE // Ícone de informação
+    );
+
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     public static void main(String args[]) {
         UIManager.put("OptionPane.yesButtonText", "Sim");
