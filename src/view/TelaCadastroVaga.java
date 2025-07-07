@@ -3,7 +3,7 @@ import generator.CrudController;
 import generator.CrudScreenGenerator;
 import javax.swing.*;
 import model.VagaEstacionamento;
-import repository.VagaRepository;
+import repository.VagaEstacionamentoRepository;
 
 
 public class TelaCadastroVaga {
@@ -15,7 +15,7 @@ public class TelaCadastroVaga {
                 e.printStackTrace();
             }
             
-            VagaRepository repository = new VagaRepository();
+            VagaEstacionamentoRepository repository = new VagaEstacionamentoRepository();
             CrudController<VagaEstacionamento> controller = new CrudController<>(repository, VagaEstacionamento.class);
             
             JFrame crudScreen = CrudScreenGenerator.generateCrudScreen(controller);

@@ -8,12 +8,12 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class VagaRepository implements CrudRepository<VagaEstacionamento> {
+public class VagaEstacionamentoRepository implements CrudRepository<VagaEstacionamento> {
 
     private final Map<Integer, VagaEstacionamento> database = new ConcurrentHashMap<>();
     private final AtomicInteger idGenerator = new AtomicInteger(1);
 
-    public  VagaRepository() {
+    public  VagaEstacionamentoRepository() {
         VagaEstacionamento v1 = new VagaEstacionamento();
         v1.setDescricao("Vaga 01 - Coberta");
         v1.setMetragemvaga(12.5f); 
