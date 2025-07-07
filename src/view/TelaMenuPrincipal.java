@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view;
 
 import generator.CrudController;
@@ -288,44 +283,42 @@ public class TelaMenuPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemQuartoActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-    String appName = "Sistema de Gestão de Hotel v1.0";
-    String devName = "Desenvolvido por: Arthur Souza Mendes e Cauã de moraes vieira";
-    String linkText = "Visualizar Projeto no GitHub";
-    String githubUrl = "https://github.com/cauamv/projeto-hotel-ifsc"; // URL já corrigida
+        String appName = "Sistema de Gestão de Hotel v1.0";
+        String devName = "Desenvolvido por: Arthur Souza Mendes e Cauã de Moraes Vieira";
+        String linkText = "Visualizar Projeto no GitHub";
+        String githubUrl = "https://github.com/cauamv/projeto-hotel-ifsc"; // URL já corrigida
 
-    JLabel appNameLabel = new JLabel(appName);
-    JLabel devNameLabel = new JLabel(devName);
-    appNameLabel.setFont(new java.awt.Font("Tahoma", java.awt.Font.BOLD, 14));
+        JLabel appNameLabel = new JLabel(appName);
+        JLabel devNameLabel = new JLabel(devName);
+        appNameLabel.setFont(new java.awt.Font("Tahoma", java.awt.Font.BOLD, 14));
 
-    JLabel linkLabel = new JLabel("<html><a href=''>" + linkText + "</a></html>");
-    linkLabel.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        JLabel linkLabel = new JLabel("<html><a href=''>" + linkText + "</a></html>");
+        linkLabel.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
-    linkLabel.addMouseListener(new java.awt.event.MouseAdapter() {
-        @Override
-        public void mouseClicked(java.awt.event.MouseEvent e) {
-            try {
-                // Tenta abrir a URL no navegador padrão do sistema operacional
-                java.awt.Desktop.getDesktop().browse(new java.net.URI(githubUrl));
-            } catch (Exception ex) {
-                // Se der algum erro, imprime no console para debug
-                ex.printStackTrace();
+        linkLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                try {
+                    java.awt.Desktop.getDesktop().browse(new java.net.URI(githubUrl));
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
             }
-        }
-    });
+        });
 
-    Object[] message = {
-        appNameLabel,
-        devNameLabel,
-        new JSeparator(),
-        linkLabel
-    };
+        Object[] message = {
+            appNameLabel,
+            devNameLabel,
+            new JSeparator(),
+            linkLabel
+        };
 
-    JOptionPane.showMessageDialog(
-        this,    // 'this' se refere à janela principal, para centralizar o diálogo nela
-        message, // Nosso painel com as informações
-        "Sobre o Sistema", // Título da janela
-        JOptionPane.INFORMATION_MESSAGE // Ícone de informação
-    );
+        JOptionPane.showMessageDialog(
+                this,
+                message,
+                "Sobre o Sistema",
+                JOptionPane.INFORMATION_MESSAGE
+        );
 
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
